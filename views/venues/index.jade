@@ -1,0 +1,19 @@
+extends ../template/layout
+include ../mixins/form-helper
+
+block content
+  #venuesIndexPage
+    .row
+      .small-12.columns
+        include ../home/authentication-form
+    .row
+      .small-12.columns
+        #the-application(class=user ? '' : 'hidden')
+    .row
+      .small-12.columns
+        //-make a link to create a venue profile.
+    .row
+      .small-4.columns
+        //-make a search panel to find venues. - will lead to a 'show' page
+      .small-8.columns
+        //-make a panel full of existing venues' profiles.

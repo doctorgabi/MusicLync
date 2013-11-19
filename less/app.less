@@ -1,5 +1,167 @@
-@base: #f938ab;
-
+@base: rgb(38, 38, 38);
+@baseText: rgb(145, 119, 76);
+@baseButton: rgb(91, 69, 45);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,900italic,900,700italic);
+@import url(http://fonts.googleapis.com/css?family=Sonsie+One);
+//-----------------------General styling-----------------------------//
 body{
-  background-color: @base;
+  background:
+  radial-gradient(black 15%, transparent 16%) 0 0,
+  radial-gradient(black 15%, transparent 16%) 8px 8px,
+  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+  background-color:#282828;
+  background-size:16px 16px;
 }
+.float{
+  float: left;
+}
+.hidden{
+  display: none;
+}
+.contain-to-grid, nav.top-bar{
+  background-color: rgb(26, 26, 26);
+  h1 > a{
+    color: @baseText;
+    font-family: 'Sonsie One', cursive;
+    font-size: 25px;
+  }
+  #authentication-button{
+    background-color: @baseButton;
+    border: none;
+    color: black;
+    &:hover{
+      background-color: @baseButton + #111111;
+      -webkit-box-shadow: -3px 5px 6px rgba(0, 0, 0, 0.85);
+      -moz-box-shadow:    -3px 5px 6px rgba(0, 0, 0, 0.85);
+      box-shadow:         -3px 5px 6px rgba(0, 0, 0, 0.85);
+    }
+  }
+}
+  //************login form************//
+
+  form#authentication input{
+    background-color: @baseText + #111111;
+    border: none;
+    opacity: 0.2;
+    border-radius: 5px;
+    -webkit-box-shadow: -3px 4px 6px rgba(20, 20, 20, 0.85);
+    -moz-box-shadow:    -3px 4px 6px rgba(20, 20, 20, 0.85);
+    box-shadow:         -3px 4px 6px rgba(20, 20, 20, 0.85);
+    &:hover, &:focus{
+      opacity: 0.7;
+    }
+  }
+  fieldset{
+    border: 2px solid @base;
+    border-radius: 5px;
+    background: rgba(239,197,202,1);
+    background: -moz-linear-gradient(top, rgba(105, 79, 36,1) 0%, rgba(38, 38, 38,1) 31%, rgba(38, 38, 38,1) 70%, rgba(105, 79, 36,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(105, 79, 36,1)), color-stop(31%, rgba(38, 38, 38,1)), color-stop(70%, rgba(38, 38, 38,1)), color-stop(100%, rgba(105, 79, 36,1)));
+    background: -webkit-linear-gradient(top, rgba(105, 79, 36,1) 0%, rgba(38, 38, 38,1) 31%, rgba(38, 38, 38,1) 70%, rgba(105, 79, 36,1) 100%);
+    background: -o-linear-gradient(top, rgba(105, 79, 36,1) 0%, rgba(38, 38, 38,1) 31%, rgba(38, 38, 38,1) 70%, rgba(105, 79, 36,1) 100%);
+    background: -ms-linear-gradient(top, rgba(105, 79, 36,1) 0%, rgba(38, 38, 38,1) 31%, rgba(38, 38, 38,1) 70%, rgba(105, 79, 36,1) 100%);
+    background: linear-gradient(to bottom, rgba(105, 79, 36,1) 0%, rgba(38, 38, 38,1) 31%, rgba(38, 38, 38,1) 70%, rgba(105, 79, 36,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#262626', endColorstr='#592e2e', GradientType=0 );
+    -moz-box-shadow: -7px 6px 8px #000000;
+    -webkit-box-shadow: -7px 6px 8px #000000;
+    box-shadow:  -7px 6px 8px #000000;
+    legend{
+      background-color: @base;
+      color: @baseText;
+      border-radius: 5px;
+    }
+    label{
+      color: @baseText;
+    }
+    #login, #register{
+      background-color: @baseButton;
+      border: none;
+      position: relative;
+      top: 17px;
+      color: @base;
+      &:hover, &:focus{
+        background-color: @baseButton + #111111;
+        -webkit-box-shadow: -3px 5px 6px rgba(0, 0, 0, 0.85);
+        -moz-box-shadow:    -3px 5px 6px rgba(0, 0, 0, 0.85);
+        box-shadow:         -3px 5px 6px rgba(0, 0, 0, 0.85);
+      }
+    }
+  }
+  //************home page************//
+#homePage{
+  h6{
+    color: @baseText;
+    font-family: 'Sonsie One', cursive;
+    text-align: center;
+    font-size: 20px;
+  }
+  p{
+    font-family: 'Roboto', Arial, sans-serif; font-weight: 100;
+    color: @baseText;
+    font-size: 12px;
+    text-align: center;
+  }
+  #homePageImageWrapper{
+    background-color: @base;
+    .homeImage{
+      border-radius: 5px;
+      opacity: 0.7;
+      border: 1px solid rgb(38, 38, 38);
+      transition:All 0.5635s ease;
+      -webkit-transition:All 0.5s ease;
+      -moz-transition:All 0.5s ease;
+      -o-transition:All 0.5s ease;
+      transform: scale(1);
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+      -o-transform: scale(1);
+      -ms-transform: scale(1);
+      &:hover{
+        opacity: 1.0;
+        border: 1px solid black;
+        transform: scale(1.05);
+        -webkit-transform: scale(1.05);
+        -moz-transform: scale(1.05);
+        -o-transform: scale(1.05);
+        -ms-transform: scale(1.05);
+        -webkit-box-shadow: -7px 8px 12px rgba(0, 0, 0, 0.85);
+        -moz-box-shadow:    -7px 8px 12px rgba(0, 0, 0, 0.85);
+        box-shadow:         -7px 8px 12px rgba(0, 0, 0, 0.85);
+      }
+    }
+  }
+}
+
+//***********************Musicians Index Page**********************//
+
+#musiciansIndexPage{
+  #createProfileButton, #editProfileButton{
+    background-color: @baseText;
+    color: @base;
+    position: relative;
+    top: 35px;
+    border: none;
+  }
+  #profileForm{
+    h5{
+      color: black;
+      &:hover{
+        color: @baseText;
+      }
+    }
+    input{
+      background-color: @baseText + #111111;
+      border: none;
+      opacity: 0.2;
+      border-radius: 5px;
+      -webkit-box-shadow: -3px 4px 6px rgba(20, 20, 20, 0.85);
+      -moz-box-shadow:    -3px 4px 6px rgba(20, 20, 20, 0.85);
+      box-shadow:         -3px 4px 6px rgba(20, 20, 20, 0.85);
+      &:hover, &:focus{
+        opacity: 0.7;
+      }
+    }
+  }
+}
+//****************Musicians profile form*****************//

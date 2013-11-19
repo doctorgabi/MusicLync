@@ -1,0 +1,10 @@
+form#authentication.hidden(action='/', method='post')
+  fieldset
+    legend Authentication
+    .row
+      mixin field(4, 'text', 'email', 'Email', null, null, true)
+      mixin field(4, 'password', 'password', 'Password')
+      .small-2.columns
+        button#register.radius.small.expand Register
+      .small-2.columns
+        button#login.radius.small.expand Login

@@ -1,0 +1,29 @@
+extends ../template/layout
+include ../mixins/form-helper
+
+block content
+  #musiciansIndexPage
+    .row
+      .small-2.columns
+        a(href="#")
+          .button.small.radius.expand#createProfileButton Create my profile
+        a(href="#")
+          .button.small.radius.expand#editProfileButton Edit my profile
+      .small-10.columns
+        include ../home/authentication-form
+        include profile-form
+    .row
+      .small-12.columns
+        #the-application(class=user ? '' : 'hidden')
+    .row
+      .small-4.columns
+        //-make a search panel to find musicians. - will lead to a 'show' page
+      .small-8.columns
+        //-make a panel full of existing musicians' profiles.
+        //- #musicians
+        //-   each musician in musicians
+        //-     .musician.float
+        //-       h3= musician.name
+        //-       a(href="/musicians/#{musician.id}")
+        //-         img(src=musician.photoURL)
+        //-   .clear

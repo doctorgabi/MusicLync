@@ -4,18 +4,32 @@ var mongoose = require('mongoose');
 // model definitions
 require('require-dir')('./models');
 
+//define middleware
+//var middleware = require('./lib/middleware');
+
+
 // route definitions
 var home = require('./routes/home');
+var users = require('./routes/users');
+var musicians = require('./routes/musicians');
+var bands = require('./routes/bands');
+var venues = require('./routes/venues');
 
 var app = express();
 var RedisStore = require('connect-redis')(express);
-mongoose.connect('mongodb://localhost/name-of-database');
+mongoose.connect('mongodb://localhost/MusicLync');
 
 // configure express
 require('./config').initialize(app, RedisStore);
 
 // routes
 app.get('/', home.index);
+app.post('/users', users.create);
+app.put('/login', users.login);
+app.delete('/logout', users.logout);
+app.get('/musicians', musicians.index);
+app.get('/bands', bands.index);
+app.get('/venues', venues.index);
 
 // start server & socket.io
 var common = require('./sockets/common');
