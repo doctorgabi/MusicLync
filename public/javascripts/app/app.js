@@ -72,7 +72,7 @@ function clickCreateMusicianProfile(){
 
 function clickProfileSubheader(){
   var $subheader = $(this);
-  $subheader.children().toggleClass('hidden');
+  $subheader.next().toggleClass('hidden');
 }
 
 function clickCancelProfileSubmit(){

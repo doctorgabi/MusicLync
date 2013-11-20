@@ -12,8 +12,8 @@ require('require-dir')('./models');
 var home = require('./routes/home');
 var users = require('./routes/users');
 var musicians = require('./routes/musicians');
-var bands = require('./routes/bands');
-var venues = require('./routes/venues');
+// var bands = require('./routes/bands');
+// var venues = require('./routes/venues');
 
 var app = express();
 var RedisStore = require('connect-redis')(express);
@@ -28,8 +28,10 @@ app.post('/users', users.create);
 app.put('/login', users.login);
 app.delete('/logout', users.logout);
 app.get('/musicians', musicians.index);
-app.get('/bands', bands.index);
-app.get('/venues', venues.index);
+app.post('/musicians', musicians.create);
+app.get('/musicians/:id', musicians.show);
+// app.get('/bands', bands.index);
+// app.get('/venues', venues.index);
 
 // start server & socket.io
 var common = require('./sockets/common');

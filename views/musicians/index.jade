@@ -7,23 +7,23 @@ block content
       .small-2.columns
         a(href="#")
           .button.small.radius.expand#createProfileButton Create my profile
+          //-.button.small.radius.expand#createProfileButton(class=user ? 'hidden' : '') Create my profile
         a(href="#")
           .button.small.radius.expand#editProfileButton Edit my profile
+          //- .button.small.radius.expand#editProfileButton(class=user ? '' : 'hidden') Edit my profile
+        a(href="#")
+          .button.small.radius.expand#searchMusiciansButton Search Musicians
       .small-10.columns
         include ../home/authentication-form
         include profile-form
-    .row
-      .small-12.columns
-        #the-application(class=user ? '' : 'hidden')
-    .row
-      .small-4.columns
-        //-make a search panel to find musicians. - will lead to a 'show' page
-      .small-8.columns
-        //-make a panel full of existing musicians' profiles.
-        //- #musicians
-        //-   each musician in musicians
-        //-     .musician.float
-        //-       h3= musician.name
-        //-       a(href="/musicians/#{musician.id}")
-        //-         img(src=musician.photoURL)
-        //-   .clear
+          //- .row
+          //-   .small-12.columns
+          //-     #the-application(class=user ? '' : 'hidden')
+        #musicians
+          each musician in musicians
+            .musician.float
+              p= musician.name
+              a(href="/musicians/#{musician.id}")
+                //-should this be just .id or ._id?
+                img#musicianPhoto(src=musician.photoUrl)
+          .clear

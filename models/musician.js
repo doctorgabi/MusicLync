@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var Musician = mongoose.Schema({
   user                    : {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  name                    : String,
   createdAt               : {type: Date, default: Date.now},
 
   location                : String,
@@ -23,7 +24,7 @@ var Musician = mongoose.Schema({
   feePerHourEquipment     : Number,
 
   influences              : [String],
-  genres                  : [{type: mongoose.Schema.Types.ObjectId, ref: 'Genre'}],
+  genres                  : String,  //[{type: mongoose.Schema.Types.ObjectId, ref: 'Genre'}],
 
   photoUrl                : String,
   website                 : String,
@@ -34,7 +35,7 @@ var Musician = mongoose.Schema({
   bandReviews             : [String],
 
   gigDates                : Date,
-  gigVenues               : [{type: mongoose.Schema.Types.ObjectId, ref: 'Venue'}],
+  gigVenues               : String,  //[{type: mongoose.Schema.Types.ObjectId, ref: 'Venue'}],
   bio                     : String,
   googlePlusLink          : String,
   facebookLink            : String,
