@@ -6,6 +6,9 @@ var Musician = mongoose.Schema({
   createdAt               : {type: Date, default: Date.now},
 
   location                : String,
+  locname                 : String,
+  latitude                : Number,
+  longitude               : Number,
   instrumentsPlayed       : [{}],//e.g. [{piano: session}, {violin: beginner}]
   instrumentsTaught       : [String],
   instrumentsOwned        : [String],

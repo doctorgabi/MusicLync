@@ -18,19 +18,11 @@ exports.index = function(req, res){
  */
 
 exports.create = function(req, res){
-  console.log('---------');
-  console.log(req.body);
+  //this gets called from the ajax request and now has all that serialised data in req.body.
   var musician = new Musician(req.body);
   musician.user = res.locals.user;
-  musician.save(function(err, m){
-    console.log('---inner----');
-    console.log(err);
-    console.log(m);
-    res.send(m);
-    //how to send back success with options to view page or view all.
-    // console.log('This is coming from routes/musicians.create: ');
-    // console.log(req.body);
-    //need to render or redirect.
+  musician.save(function(err, musician){
+    res.send(musician);
   });
 };
 

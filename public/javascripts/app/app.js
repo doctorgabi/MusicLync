@@ -3,7 +3,7 @@
 $(document).ready(initialize);
 
 var socket;
-
+var musician;
 function initialize(){
   $(document).foundation();
   initializeSocketIO();
@@ -12,8 +12,10 @@ function initialize(){
   $('#login').on('click', clickLogin);
   $('#musiciansIndexPage #createProfileButton').on('click', clickCreateMusicianProfile);
   $('#musiciansIndexPage #profileForm h5').on('click', clickProfileSubheader);
+  $('#musiciansIndexPage #profileForm').on('submit', clickSaveProfile);
   $('#musiciansIndexPage #profileForm #cancelProfile').on('click', clickCancelProfileSubmit);
-
+  $('#musiciansIndexPage #ViewMyProfileLink').on('click', clickViewMusicianProfile);
+  initMap(musician.latitude, musician.longitude, 6);
 }
 
 function initializeSocketIO(){
@@ -27,6 +29,14 @@ function initializeSocketIO(){
 function socketConnected(data){
   console.log(data);
 }
+
+function initMap(lat, lng, zoom){
+  var mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.SATELLITE};
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  var image =  'imgages/mapMarker.png';
+  new google.maps.Marker({map: map, position: (lat, lng), icon: image});
+}
+
 //-------------------------------------------------------------------//
 //-------------------------Click Handlers----------------------------//
 //-------------------------------------------------------------------//
@@ -34,10 +44,10 @@ function socketConnected(data){
 
 function clickRegister(e){
   var url = '/users';
-  var data = $('form#authentication').serialize();//quickly grab the whole form using serialize
+  var data = $('form#authentication').serialize();
   sendAjaxRequest(url, data, 'post', null, e, function(data){
     htmlRegisterComplete(data);
-  });//brought in from 'utilities file'. there's already a prevent default in there.
+  });
 }
 
 function clickLogin(e){
@@ -73,6 +83,34 @@ function clickCreateMusicianProfile(){
 function clickProfileSubheader(){
   var $subheader = $(this);
   $subheader.next().toggleClass('hidden');
+}
+
+function clickSaveProfile(e){
+  var name = $('#location').val();
+  var geocoder = new google.maps.Geocoder();
+  var form = this;
+
+  geocoder.geocode({address: name}, function(results, status){
+    var location = {};
+    location.name = results[0].formattedAddress;
+    location.coordinates = results[0].geometry.location;
+
+    var locdata = {
+      locationname : location.name,
+      latitude  : location.coordinates.lat(),
+      longitude  : location.coordinates.lng()
+    };
+
+    var formSerialized = $(form).serialize();
+    var locSerialized = $.param(locdata);
+    var data = locSerialized + '&' + formSerialized;
+
+    sendAjaxRequest('/musicians', data, 'post', null, null, function(musician, status, jqXHR){
+      htmlUpdateMusicians(musician);
+      //call a function now to say congrats you saved your profile, do you want to view it or view all?
+    });
+  });
+  e.preventDefault();
 }
 
 function clickCancelProfileSubmit(){
@@ -112,4 +150,20 @@ function htmlLogout(data){
   $('#authentication-button').removeClass('alert');
   $('#the-application').addClass('hidden');
   window.location.href='/';
+}
+
+
+//-------------------------------------------------------------------//
+//-------------------------All Musicians Page------------------------//
+//-------------------------------------------------------------------//
+
+//-----from submit new musician profile form-----//
+function htmlUpdateMusicians(musician){
+  $('#musiciansIndexPage #profileForm').addClass('hidden');
+  $('#successNotifier').removeClass('hidden');
+  $('#ViewMyProfileLink').attr('href', '/musicians/'+musician._id);
+}
+
+function clickViewMusicianProfile(){
+  $('#successNotifier').addClass('hidden');
 }
