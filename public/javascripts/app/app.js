@@ -1,12 +1,12 @@
-/* global document, sendAjaxRequest, window, io */
-
+/* global document, sendAjaxRequest, window */
+//io was up there too; don't plan to use sockets.
 $(document).ready(initialize);
 
-var socket;
+// var socket;
 var musician;
 function initialize(){
   $(document).foundation();
-  initializeSocketIO();
+  // initializeSocketIO();
   $('#authentication-button').on('click', clickAuthenticationButton);
   $('#register').on('click', clickRegister);
   $('#login').on('click', clickLogin);
@@ -18,17 +18,17 @@ function initialize(){
   initMap(musician.latitude, musician.longitude, 6);
 }
 
-function initializeSocketIO(){
-  var port = window.location.port ? window.location.port : '80';
-  var url = window.location.protocol + '//' + window.location.hostname + ':' + port + '/app';
+// function initializeSocketIO(){
+//   var port = window.location.port ? window.location.port : '80';
+//   var url = window.location.protocol + '//' + window.location.hostname + ':' + port + '/app';
 
-  socket = io.connect(url);
-  socket.on('connected', socketConnected);
-}
+//   socket = io.connect(url);
+//   socket.on('connected', socketConnected);
+// }
 
-function socketConnected(data){
-  console.log(data);
-}
+// function socketConnected(data){
+//   console.log(data);
+// }
 
 function initMap(lat, lng, zoom){
   var mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.SATELLITE};
@@ -113,8 +113,10 @@ function clickSaveProfile(e){
   e.preventDefault();
 }
 
-function clickCancelProfileSubmit(){
+function clickCancelProfileSubmit(e){
+  e.preventDefault();
   $('#musiciansIndexPage #profileForm input').val('');
+  $('#musiciansIndexPage #profileForm').addClass('hidden');
 }
 
 //-------------------------------------------------------------------//

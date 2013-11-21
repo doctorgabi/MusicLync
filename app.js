@@ -39,3 +39,5 @@ var server = require('http').createServer(app);
 var io = require('socket.io').listen(server, {log: true, 'log level': 2});
 server.listen(app.get('port'));
 io.of('/app').on('connection', common.connection);
+
+
