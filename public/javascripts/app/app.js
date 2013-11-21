@@ -1,9 +1,13 @@
 /* global document, sendAjaxRequest, window */
 //io was up there too; don't plan to use sockets.
-$(document).ready(initialize);
+var mongoose = require('mongoose');
+var Musician = mongoose.model('Musician');
 
+$(document).ready(initialize);
+var lat;
+var lng;
 // var socket;
-var musician;
+
 function initialize(){
   $(document).foundation();
   // initializeSocketIO();
@@ -15,7 +19,8 @@ function initialize(){
   $('#musiciansIndexPage #profileForm').on('submit', clickSaveProfile);
   $('#musiciansIndexPage #profileForm #cancelProfile').on('click', clickCancelProfileSubmit);
   $('#musiciansIndexPage #ViewMyProfileLink').on('click', clickViewMusicianProfile);
-  initMap(musician.latitude, musician.longitude, 6);
+  $('#musiciansIndexPage .musician a').on('click', clickMusicianLink);
+  initMap(lat, lng, 6);
 }
 
 // function initializeSocketIO(){
@@ -117,6 +122,20 @@ function clickCancelProfileSubmit(e){
   e.preventDefault();
   $('#musiciansIndexPage #profileForm input').val('');
   $('#musiciansIndexPage #profileForm').addClass('hidden');
+}
+
+function clickMusicianLink(e){
+  e.preventDefault();
+  var musicianId = $(this).attr('href');//contains the url with id
+  debugger;
+  musicianId = musicianId.slice(11);//slices out to keep just the id
+  Musician.findById(musicianId, function(err, musician){
+    lat = musician.latitude;
+    lng = musician.longitude;
+    sendAjaxRequest('/musicians/musicianId', null, 'get', null, null, function(musician, status, jqXHR){
+      console.log(musician);
+    });
+  });
 }
 
 //-------------------------------------------------------------------//
