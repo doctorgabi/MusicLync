@@ -17,7 +17,7 @@ var Musician = mongoose.Schema({
   skills                  : [String],
   hasEquipmentTransport   : {type: Boolean, default: false},
   availableTime           : Number,
-  ageGroup                : [String],
+  ageGroup                : String,
 
   wantsToPractice         : {type: Boolean, default: true},
   wantsToPerform          : {type: Boolean, default: false},

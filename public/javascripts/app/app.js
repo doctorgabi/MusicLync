@@ -189,7 +189,7 @@ function htmlUpdateMusicians(musician){
   $('#ViewMyProfileLink').attr('href', '/musicians/'+musician._id);
 }
 function htmlUpdateProfileFormGenres(genre){
-  var $genre = $('<li>'+genre.name+'<input type="checkbox" value="'+genre.id+'" name="genres"></input></li>');
+  var $genre = $('<span>'+genre.name+'<input type="checkbox" value="'+genre.id+'" name="genres"></input></span>');
   $('#profileFormGenres').append($genre);
 }
 

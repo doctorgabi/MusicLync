@@ -170,7 +170,7 @@ body{
         color: @baseText;
       }
     }
-    input, #bio{
+    input, #bio, #ageSelectBox{
       background-color: @baseText + #111111;
       color: black;
       border: none;
@@ -183,7 +183,19 @@ body{
         opacity: 0.7;
       }
     }
-    #saveProfile, #cancelProfile{
+    #about{
+      h6{
+        color: @baseText;
+        font-family: 'Roboto', Arial, sans-serif; font-weight: 400;
+        font-size: 15px;
+        letter-spacing: -1px;
+      }
+      #ageSelectBox{
+        position: relative;
+        top: -10px;
+      }
+    }
+    #saveProfile, #cancelProfile, #addGenreButton{
       background-color: @baseButton;
       border: none;
       color: black;
@@ -193,6 +205,10 @@ body{
         -moz-box-shadow:    -3px 5px 6px rgba(0, 0, 0, 0.85);
         box-shadow:         -3px 5px 6px rgba(0, 0, 0, 0.85);
       }
+    }
+    #addGenreButton{
+      position: relative;
+      top: 17px;
     }
   }
   #musicians{

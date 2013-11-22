@@ -11,16 +11,29 @@ form#profileForm.hidden(action='/musicians', method='post')
           mixin field(3, 'text', 'name', 'Name', null, null, true)
           mixin field(3, 'text', 'location', 'Location', null, null, false, 'location')
           mixin field(3, 'text', 'availableTime', 'Available Time', null, 'e.g. 3hrs per week')
-          mixin field(3, 'text', 'ageGroup', 'Age Group')
+          .small-3.columns
+            h6='Age Group'
+            select#ageSelectBox
+              option(name='ageGroup' value="16-20")= '16-20'
+              option(name='ageGroup' value="21-30")= '21-30'
+              option(name='ageGroup' value="31-40")= '31-40'
+              option(name='ageGroup' value="41-50")= '41-50'
+              option(name='ageGroup' value="51-60")= '51-60'
+              option(name='ageGroup' value="61-70")= '61-70'
+              option(name='ageGroup' value="71-80")= '71-80'
+              option(name='ageGroup' value="81-90")= '81-90'
+              option(name='ageGroup' value="91-100")= '91-100'
           .row
             mixin field(6, 'text', 'photoUrl', 'Photo URL')
             mixin field(6, 'text', 'influences', 'Influences')
           .row
-            .small-12.columns
-              ul#profileFormGenres
+            .small-7.columns
+              #profileFormGenres
                 each genre in genres
-                  li= genre.name
+                  span= "    " + genre.name + ":  "
                     input(type='checkbox', value=genre.id, name='genres')
+            .small-5.columns
+              p= "Don't see your genre? Add it below:"
               mixin field(6, 'text', 'genre', 'New Genre', null, null, false, 'AddNewGenre')
               .button.small.radius#addGenreButton Add Genre
           .row

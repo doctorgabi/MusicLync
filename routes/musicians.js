@@ -35,10 +35,7 @@ exports.create = function(req, res){
  */
 exports.show = function(req, res){
   Musician.findById(req.params.id).populate('genres').exec(function(err, musician){
-    console.log('this is from the route that should render the show page: ');
-    console.log(musician);//this all works up to here.
-    res.render('musicians/show', {title: 'Musician', musician: musician});//*********WTF******//
-    console.log('this is the line after the res.render function');//this line prints too
+    res.render('musicians/show', {title: 'Musician', musician: musician});
   });
 };
 
