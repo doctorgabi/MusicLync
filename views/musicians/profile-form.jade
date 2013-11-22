@@ -13,9 +13,16 @@ form#profileForm.hidden(action='/musicians', method='post')
           mixin field(3, 'text', 'availableTime', 'Available Time', null, 'e.g. 3hrs per week')
           mixin field(3, 'text', 'ageGroup', 'Age Group')
           .row
-            mixin field(4, 'text', 'influences', 'Influences')
-            mixin field(4, 'text', 'genres', 'Genres')
-            mixin field(4, 'text', 'photoUrl', 'Photo URL')
+            mixin field(6, 'text', 'photoUrl', 'Photo URL')
+            mixin field(6, 'text', 'influences', 'Influences')
+          .row
+            .small-12.columns
+              ul#profileFormGenres
+                each genre in genres
+                  li= genre.name
+                    input(type='checkbox', value=genre.id, name='genres')
+              mixin field(6, 'text', 'genre', 'New Genre', null, null, false, 'AddNewGenre')
+              .button.small.radius#addGenreButton Add Genre
           .row
             label(for='bio') Bio:
             textarea#bio(name='bio')

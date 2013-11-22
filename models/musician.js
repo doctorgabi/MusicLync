@@ -27,7 +27,7 @@ var Musician = mongoose.Schema({
   feePerHourEquipment     : Number,
 
   influences              : [String],
-  genres                  : String,  //[{type: mongoose.Schema.Types.ObjectId, ref: 'Genre'}],
+  genres                  : [{type: mongoose.Schema.Types.ObjectId, ref: 'Genre'}],
 
   photoUrl                : String,
   website                 : String,
