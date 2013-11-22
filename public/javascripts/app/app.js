@@ -125,13 +125,9 @@ function clickSaveProfile(e){
 
     var ageSerialized = $.param(ageGroup);
     var formSerialized = $(form).serialize();
-    console.log(formSerialized);
-    debugger;
     var locSerialized = $.param(locdata);
     var data = ageSerialized + '&' + locSerialized + '&' + formSerialized;
     sendAjaxRequest('/musicians', data, 'post', null, null, function(musician, status, jqXHR){
-      console.log('-----------app.js----------');
-      console.log(musician);
       htmlUpdateMusicians(musician);
     });
   });
