@@ -101,10 +101,10 @@ function clickSaveProfile(e){
   var name = $('#location').val();
   var geocoder = new google.maps.Geocoder();
   var form = this;
-  // var genres = [];
-  // for(var i = 0; i< $('#profileFormGenres li').length; i++){
-  //   $('#profileFormGenres li:nth-child[i]')
-  // }
+  var age = $('#ageSelectBox').val();
+  var ageGroup = {'ageGroup': age};
+
+  debugger;
   geocoder.geocode({address: name}, function(results, status){
     var location = {};
     location.name = results[0].formattedAddress;
@@ -116,9 +116,10 @@ function clickSaveProfile(e){
       longitude  : location.coordinates.lng()
     };
 
+    var ageSerialized = $.param(ageGroup);
     var formSerialized = $(form).serialize();
     var locSerialized = $.param(locdata);
-    var data = locSerialized + '&' + formSerialized;
+    var data = ageSerialized + '&' + locSerialized + '&' + formSerialized;
     sendAjaxRequest('/musicians', data, 'post', null, null, function(musician, status, jqXHR){
       htmlUpdateMusicians(musician);
     });
