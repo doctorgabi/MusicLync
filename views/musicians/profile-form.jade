@@ -44,10 +44,21 @@ form#profileForm.hidden(action='/musicians', method='post')
       a(href="#")
         h5 Your skills:
         .form#skills.hidden
-          mixin field(3, 'text', 'instrumentsPlayed', 'Instruments you Play', null, null, true)//-change to a dropdown? populate with instruments?
-          mixin field(3, 'text', 'abilityLevel', 'Ability Level', null, 'e.g. beginner')
-          mixin field(3, 'text', 'skills', 'Other Skills', null, 'e.g. Songwriter')
-          mixin field(3, 'text', 'instrumentsTaught', 'Instruments you teach')//-change to a dropdown? populate with instruments?
+          .row
+            .small-7.columns
+              #profileFormInstruments
+                each instrument in instruments
+                  span= "    " + instrument.name + ":  "
+                    input(type='checkbox', value=instrument.id, name='instruments')
+            .small-5.columns
+              p= "Don't see your instrument? Add it below:"
+              mixin field(6, 'text', 'instrumentsPlayed', 'New Instrument', null, null, false, 'AddNewInstrument')
+              .button.small.radius#addInstrumentButton Add Instrument
+          .row
+            .small-12.columns
+              mixin field(4, 'text', 'abilityLevel', 'Ability Level', null, 'e.g. beginner')
+              mixin field(4, 'text', 'skills', 'Other Skills', null, 'e.g. Songwriter')
+              mixin field(4, 'text', 'instrumentsTaught', 'Instruments you teach')//-change to a dropdown? populate with instruments?
 
     .row
       a(href="#")

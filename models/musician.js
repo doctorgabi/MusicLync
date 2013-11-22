@@ -9,7 +9,7 @@ var Musician = mongoose.Schema({
   locname                 : String,
   latitude                : Number,
   longitude               : Number,
-  instrumentsPlayed       : [{}],//e.g. [{piano: session}, {violin: beginner}]
+  instruments             : [{type: mongoose.Schema.Types.ObjectId, ref: 'Instrument'}],
   instrumentsTaught       : [String],
   instrumentsOwned        : [String],
   equipmentAccess         : [String],

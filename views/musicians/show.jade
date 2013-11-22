@@ -14,7 +14,9 @@ block content
         #musicianProfile
           h5=musician.name
           p=musician.location
-          p Instruments played: #{musician.instrumentsPlayed}
+          p= "Instruments: "
+            each instrument in musician.instruments
+              span= instrument.name + "  "
           p= "Genres: "
             each genre in musician.genres
               span= genre.name + "  "

@@ -13,6 +13,7 @@ var home = require('./routes/home');
 var users = require('./routes/users');
 var musicians = require('./routes/musicians');
 var genres = require('./routes/genres');
+var instruments = require('./routes/instruments');
 // var bands = require('./routes/bands');
 // var venues = require('./routes/venues');
 
@@ -33,6 +34,7 @@ app.post('/musicians', musicians.create);
 app.get('/musicians/:id', musicians.show);
 app.get('/mapDataRequest/:id', musicians.map);
 app.post('/genres', genres.create);
+app.post('/instruments', instruments.create);
 // app.get('/bands', bands.index);
 // app.get('/venues', venues.index);
 

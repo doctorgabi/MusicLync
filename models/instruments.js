@@ -1,8 +1,8 @@
-// var mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
-// var Instruments = mongoose.Schema({
-//   name:      String,
-//   musicians :    [{type: mongoose.Schema.Types.ObjectId, ref: 'Musician'}]
-// });
+var Instrument = mongoose.Schema({
+  name      : String,
+  musicians : [{type: mongoose.Schema.Types.ObjectId, ref: 'Musician'}]
+});
 
-// mongoose.model('Instrument', Instrument);
+mongoose.model('Instrument', Instrument);

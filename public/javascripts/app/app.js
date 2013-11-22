@@ -16,6 +16,7 @@ function initialize(){
   $('#musiciansIndexPage #profileForm h5').on('click', clickProfileSubheader);
   $('#musiciansIndexPage #profileForm').on('submit', clickSaveProfile);
   $('#musiciansIndexPage #profileForm #addGenreButton').on('click', clickAddGenre);
+  $('#musiciansIndexPage #profileForm #addInstrumentButton').on('click', clickAddInstrument);
   $('#musiciansIndexPage #profileForm #cancelProfile').on('click', clickCancelProfileSubmit);
   $('#musiciansIndexPage #ViewMyProfileLink').on('click', clickViewMusicianProfile);
   $('#musiciansIndexPage .musician a').on('click', clickMusicianLink);
@@ -97,14 +98,20 @@ function clickAddGenre(){
   });
 }
 
+function clickAddInstrument(){
+  var instrument = $('#AddNewInstrument').val();
+  var data = {name: instrument};
+  sendAjaxRequest('/instruments', data, 'post', null, null, function(instrument, status, jqXHR){
+    htmlUpdateProfileFormInstruments(instrument);
+  });
+}
+
 function clickSaveProfile(e){
   var name = $('#location').val();
   var geocoder = new google.maps.Geocoder();
   var form = this;
   var age = $('#ageSelectBox').val();
   var ageGroup = {'ageGroup': age};
-
-  debugger;
   geocoder.geocode({address: name}, function(results, status){
     var location = {};
     location.name = results[0].formattedAddress;
@@ -118,9 +125,13 @@ function clickSaveProfile(e){
 
     var ageSerialized = $.param(ageGroup);
     var formSerialized = $(form).serialize();
+    console.log(formSerialized);
+    debugger;
     var locSerialized = $.param(locdata);
     var data = ageSerialized + '&' + locSerialized + '&' + formSerialized;
     sendAjaxRequest('/musicians', data, 'post', null, null, function(musician, status, jqXHR){
+      console.log('-----------app.js----------');
+      console.log(musician);
       htmlUpdateMusicians(musician);
     });
   });
@@ -192,6 +203,11 @@ function htmlUpdateMusicians(musician){
 function htmlUpdateProfileFormGenres(genre){
   var $genre = $('<span>'+genre.name+'<input type="checkbox" value="'+genre.id+'" name="genres"></input></span>');
   $('#profileFormGenres').append($genre);
+}
+
+function htmlUpdateProfileFormInstruments(instrument){
+  var $instrument = $('<span>'+instrument.name+'<input type="checkbox" value="'+instrument.id+'" name="instruments"></input></span>');
+  $('#profileFormInstruments').append($instrument);
 }
 
 function clickViewMusicianProfile(){
