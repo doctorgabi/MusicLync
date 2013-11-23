@@ -32,6 +32,7 @@ app.delete('/logout', users.logout);
 app.get('/musicians', musicians.index);
 app.post('/musicians', musicians.create);
 app.get('/musicians/:id', musicians.show);
+app.get('/mapDataRequest', musicians.mapAll);
 app.get('/mapDataRequest/:id', musicians.map);
 app.post('/genres', genres.create);
 app.post('/instruments', instruments.create);

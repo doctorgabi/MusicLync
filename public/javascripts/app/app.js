@@ -13,6 +13,7 @@ function initialize(){
   $('#register').on('click', clickRegister);
   $('#login').on('click', clickLogin);
   $('#musiciansIndexPage #createProfileButton').on('click', clickCreateMusicianProfile);
+  $('#musiciansIndexPage #searchMusiciansButton').on('click', clickSearchMusician);
   $('#musiciansIndexPage #profileForm h5').on('click', clickProfileSubheader);
   $('#musiciansIndexPage #profileForm').on('submit', clickSaveProfile);
   $('#musiciansIndexPage #profileForm #addGenreButton').on('click', clickAddGenre);
@@ -85,6 +86,43 @@ function clickCreateMusicianProfile(){
   $('#musiciansIndexPage #profileForm').removeClass('hidden');
 }
 
+function clickSearchMusician(){
+  $('#searchForm').removeClass('hidden');
+  //put an ajax request in here that grabs the search term location and converts it to lat & lng
+  var lat = 55;
+  var lng = -1.6;
+  var zoom = 5;
+  var mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.ROADMAP};
+  var map = new google.maps.Map(document.getElementById('musicians-map-canvas'), mapOptions);
+  // var latLng = new google.maps.LatLng(lat, lng);
+  // new google.maps.Marker({map: map, position: latLng});
+  $('#musicians-map-canvas').removeClass('hidden');
+  var url = '/mapDataRequest';
+
+  sendAjaxRequest(url, null, 'get', null, null, function(musicians){
+    for(var i=0; i< musicians.length; i++){
+      var musician = musicians[i];
+      var latLng = new google.maps.LatLng(musicians[i].latitude, musician.longitude);
+      var marker = new google.maps.Marker({map: map, position: latLng, clickable: true});
+      marker.info = new google.maps.InfoWindow({content: '<p>'+ musician.name + '</p><img src="' + musician.photoUrl + '"/>'});
+      addListener(map, marker);
+    }
+    function addListener(map, marker){
+      google.maps.event.addListener(marker, 'click', function(map, marker){
+        marker.info.open(map, marker);
+      });
+    }
+  });
+}
+//htmlAddAllMusiciansInfoToMarkers(map, marker, musicians[i]);
+// function htmlAddAllMusiciansInfoToMarkers(map, marker, musician){
+  // google.maps.event.addListener(marker, 'click', function(marker, musician){
+  //   infowindow.setContent('<strong>'+ musician.name + '</strong>');//this was musicians[i] so try that too. Also re-embed this within the above function.
+  //   infowindow.open(map, this);
+  // });
+// }
+// }
+
 function clickProfileSubheader(){
   var $subheader = $(this);
   $subheader.next().toggleClass('hidden');
@@ -150,6 +188,9 @@ function clickMusicianLink(e){
   e.preventDefault();
 }
 
+function clickViewMusicianProfile(){
+  $('#successNotifier').addClass('hidden');
+}
 //-------------------------------------------------------------------//
 //-------------------------Login HTML changes------------------------//
 //-------------------------------------------------------------------//
@@ -204,8 +245,4 @@ function htmlUpdateProfileFormGenres(genre){
 function htmlUpdateProfileFormInstruments(instrument){
   var $instrument = $('<span>'+instrument.name+'<input type="checkbox" value="'+instrument.id+'" name="instruments"></input></span>');
   $('#profileFormInstruments').append($instrument);
-}
-
-function clickViewMusicianProfile(){
-  $('#successNotifier').addClass('hidden');
 }

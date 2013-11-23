@@ -48,6 +48,14 @@ exports.show = function(req, res){
   });
 };
 
+/*
+ * GET '/mapDataRequest'
+ */
+exports.mapAll = function(req, res){
+  Musician.find(function(err, musicians){
+    res.send(musicians);
+  });
+};
 
 /*
  * GET '/mapDataRequest/:id'

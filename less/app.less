@@ -159,7 +159,11 @@ body{
       color: @baseText;
     }
   }
-  #profileForm{
+  #profileForm, #searchForm{
+    span{
+      color: @baseText;
+      font-family: 'Roboto', Arial, sans-serif; font-weight: 100;
+    }
     p{
       color: @baseText;
       font-family: 'Roboto', Arial, sans-serif; font-weight: 100;
@@ -195,7 +199,7 @@ body{
         top: -10px;
       }
     }
-    #saveProfile, #cancelProfile, #addGenreButton, #addInstrumentButton{
+    #saveProfile, #cancelProfile, #addGenreButton, #addInstrumentButton, #startSearchMusician, #cancelSearchMusician{
       background-color: @baseButton;
       border: none;
       color: black;
@@ -209,6 +213,26 @@ body{
     #addGenreButton, #addInstrumentButton{
       position: relative;
       top: 16px;
+    }
+  }
+  #searchForm{
+    #ageSelectBox{
+      position: relative;
+      top: -12px;
+    }
+    h6{
+      position: relative;
+      top: -4px;
+      color: @baseText;
+      font-family: 'Roboto', Arial, sans-serif; font-weight: 400;
+      font-size: 15px;
+      letter-spacing: -1px;
+    }
+    h5{
+      color: @baseText;
+      font-family: 'Roboto', Arial, sans-serif; font-weight: 400;
+      font-size: 17px;
+      text-align: center;
     }
   }
   #musicians{
@@ -248,6 +272,12 @@ body{
         height: 150px;
       }
     }
+  }
+  #musicians-map-canvas{
+    height: 500px;
+    width: 500px;
+    border: 8px solid @baseText;
+    border-radius: 15px;
   }
 }
 //****************Musicians profile form*****************//
