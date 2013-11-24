@@ -4,7 +4,7 @@ include ../mixins/form-helper
 block content
   #musiciansIndexPage
     .row
-      .small-2.columns
+      .small-2.columns#sideNav
         a(href="#")
           .button.small.radius.expand#createProfileButton Create my profile
           //-.button.small.radius.expand#createProfileButton(class=user ? 'hidden' : '') Create my profile
@@ -16,8 +16,14 @@ block content
       .small-10.columns
         include ../home/authentication-form
         include profile-form
-        #musicians-map-canvas.hidden
-        include search-form
+        .row
+          .small-8.columns
+            #musicians-map-canvas.hidden
+          .small-4.columns
+            include search-form
+        include searchAttributes-form
+
+
         #successNotifier.hidden
           h5 Success! You have just created your profile. What would you like to do now?
           a(href="/musicians")
@@ -26,11 +32,12 @@ block content
             .button.small.radius View my profile
           a#EditmyProfileLink(href="#")
             .button.small.radius Edit my profile
+
+
         #musicians
           each musician in musicians
             .musician.float
               p= musician.name
               a(href="/musicians/#{musician.id}")
-                //-should this be just .id or ._id?
                 img#musicianPhoto(src=musician.photoUrl)
           .clear

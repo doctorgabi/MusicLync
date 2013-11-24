@@ -12,15 +12,18 @@ function initialize(){
   $('#authentication-button').on('click', clickAuthenticationButton);
   $('#register').on('click', clickRegister);
   $('#login').on('click', clickLogin);
+  $('#musiciansIndexPage .musician a').on('click', clickMusicianLink);
   $('#musiciansIndexPage #createProfileButton').on('click', clickCreateMusicianProfile);
-  $('#musiciansIndexPage #searchMusiciansButton').on('click', clickSearchMusician);
   $('#musiciansIndexPage #profileForm h5').on('click', clickProfileSubheader);
   $('#musiciansIndexPage #profileForm').on('submit', clickSaveProfile);
   $('#musiciansIndexPage #profileForm #addGenreButton').on('click', clickAddGenre);
   $('#musiciansIndexPage #profileForm #addInstrumentButton').on('click', clickAddInstrument);
   $('#musiciansIndexPage #profileForm #cancelProfile').on('click', clickCancelProfileSubmit);
   $('#musiciansIndexPage #ViewMyProfileLink').on('click', clickViewMusicianProfile);
-  $('#musiciansIndexPage .musician a').on('click', clickMusicianLink);
+  $('#musiciansIndexPage #searchMusiciansButton').on('click', clickSearchMusician);
+  $('#musiciansIndexPage #searchMusicianByLocation').on('click', clickSearchMusicianByLocation);
+  $('#musiciansIndexPage #searchMusicianByAttributes').on('click', clickSearchMusicianByAttributes);
+  $('#musiciansIndexPage #musicianReturnLocationSearch').on('click', clickMusicianReturnLocationSearch);
   initMap(lat, lng, 13);
 }
 
@@ -79,50 +82,43 @@ function clickAuthenticationButton(e){
   e.preventDefault();
 }
 
-//-------------------------------------------------------------------//
 //-------------Musicians Index Page Click Handlers-------------------//
-//-------------------------------------------------------------------//
+
 function clickCreateMusicianProfile(){
   $('#musiciansIndexPage #profileForm').removeClass('hidden');
 }
 
 function clickSearchMusician(){
+  $('#musicians').addClass('hidden');
   $('#searchForm').removeClass('hidden');
-  //put an ajax request in here that grabs the search term location and converts it to lat & lng
-  var lat = 55;
-  var lng = -1.6;
-  var zoom = 5;
-  var mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.ROADMAP};
-  var map = new google.maps.Map(document.getElementById('musicians-map-canvas'), mapOptions);
-  // var latLng = new google.maps.LatLng(lat, lng);
-  // new google.maps.Marker({map: map, position: latLng});
-  $('#musicians-map-canvas').removeClass('hidden');
-  var url = '/mapDataRequest';
-  sendAjaxRequest(url, null, 'get', null, null, function(musicians){
-    for(var i=0; i< musicians.length; i++){
-      var musician = musicians[i];
-      var latLng = new google.maps.LatLng(musician.latitude, musician.longitude);
-      buildInfoWindow(musician, latLng);
-    }
+}
+
+function clickSearchMusicianByLocation(){
+  var place = $('#searchLocation').val();
+
+  var geocoder = new google.maps.Geocoder();
+  geocoder.geocode({address: place}, function(results, status){
+    var location = {};
+    location.lat = results[0].geometry.location.ob;
+    location.long = results[0].geometry.location.pb;//refactor these three lines just to lines lat & lng?
+
+    var lat = location.lat;
+    var lng = location.long;
+    htmlUpdateMusiciansMap(lat, lng);
   });
-  function buildInfoWindow(musician, latLng){
-    var id = musician._id;
-    var marker = new google.maps.Marker({map: map, position: latLng, clickable: true});
-    marker.info = new google.maps.InfoWindow({
-      content: '<div class="musicianInfoWindow"><p>' + musician.name + '</p><img src="' + musician.photoUrl + '"/></div>'
-    });
-    google.maps.event.addListener(marker, 'mouseover', function() {
-      marker.info.open(map, marker);
-    });
-    google.maps.event.addListener(marker, 'mouseout', function(){
-      marker.info.close();
-    });
-    google.maps.event.addListener(marker, 'click', function(musician){
-      //var url = '/musicians/' + id;
-      // sendAjaxRequest(url, id, 'get', null, null, function(musician, status, jqXHR){
-      window.location.href = '/musicians/' + id;
-    });
-  }
+}
+
+function clickSearchMusicianByAttributes(){
+  $('#musicians-map-canvas').toggleClass('hidden');
+  $('#searchForm').toggleClass('hidden');
+  $('#searchAttributesForm').removeClass('hidden');
+}
+
+function clickMusicianReturnLocationSearch(e){
+  $('#musicians-map-canvas').toggleClass('hidden');
+  $('#searchForm').toggleClass('hidden');
+  $('#searchAttributesForm').toggleClass('hidden');
+  e.preventDefault();
 }
 
 function clickProfileSubheader(){
@@ -247,4 +243,36 @@ function htmlUpdateProfileFormGenres(genre){
 function htmlUpdateProfileFormInstruments(instrument){
   var $instrument = $('<span>'+instrument.name+'<input type="checkbox" value="'+instrument.id+'" name="instruments"></input></span>');
   $('#profileFormInstruments').append($instrument);
+}
+
+function htmlUpdateMusiciansMap(lat, lng){
+  var zoom = 5;
+  var mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.ROADMAP};
+  var map = new google.maps.Map(document.getElementById('musicians-map-canvas'), mapOptions);
+  $('#musicians-map-canvas').removeClass('hidden');
+  var url = '/mapDataRequest';
+  sendAjaxRequest(url, null, 'get', null, null, function(musicians){
+    for(var i=0; i< musicians.length; i++){
+      var musician = musicians[i];
+      var latLng = new google.maps.LatLng(musician.latitude, musician.longitude);
+      mapMarkerBuildInfoWindow(map, musician, latLng);
+    }
+  });
+}
+
+function mapMarkerBuildInfoWindow(map, musician, latLng){
+  var id = musician._id;
+  var marker = new google.maps.Marker({map: map, position: latLng, clickable: true});
+  marker.info = new google.maps.InfoWindow({
+    content: '<div class="musicianInfoWindow"><p>' + musician.name + '</p><img src="' + musician.photoUrl + '"/></div>'
+  });
+  google.maps.event.addListener(marker, 'mouseover', function() {
+    marker.info.open(map, marker);
+  });
+  google.maps.event.addListener(marker, 'mouseout', function(){
+    marker.info.close();
+  });
+  google.maps.event.addListener(marker, 'click', function(musician){
+    window.location.href = '/musicians/' + id;
+  });
 }

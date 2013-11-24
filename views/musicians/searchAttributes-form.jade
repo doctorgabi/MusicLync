@@ -1,0 +1,43 @@
+form#searchAttributesForm.hidden(action='/musicians', method='get')
+  fieldset
+    legend Profile
+    .row
+      p Search using as many or as few categories as you like.
+    .row
+      .form
+        .row
+          mixin field(4, 'text', 'name', 'Name', null, null, false)
+          mixin field(4, 'text', 'availableTime', 'Available Time', null, 'e.g. 3hrs per week')
+          .small-4.columns
+            h6='Age Group:'
+            select#ageSelectBox
+              option(name='ageGroup' value="")= 'Any age'
+              option(name='ageGroup' value="16-20")= '16-20'
+              option(name='ageGroup' value="21-30")= '21-30'
+              option(name='ageGroup' value="31-40")= '31-40'
+              option(name='ageGroup' value="41-50")= '41-50'
+              option(name='ageGroup' value="51-60")= '51-60'
+              option(name='ageGroup' value="61-70")= '61-70'
+              option(name='ageGroup' value="71-80")= '71-80'
+              option(name='ageGroup' value="81-90")= '81-90'
+              option(name='ageGroup' value="91-100")= '91-100'
+        .row
+          .small-6.columns
+            #searchFormGenres
+              h5 Search by genre:
+              each genre in genres
+                span= "    " + genre.name + ":  "
+                  input(type='checkbox', value=genre.id, name='genres')
+          .small-6.columns
+            #searchFormInstruments
+              h5 Search by instrument:
+              each instrument in instruments
+                span= "    " + instrument.name + ":  "
+                  input(type='checkbox', value=instrument.id, name='instruments')
+        .row
+          .small-4.columns
+            button#startSearchMusician.radius.small.expand(type='submit') Search
+          .small-4.columns
+            button#musicianReturnLocationSearch.radius.small.expand Return to Search by Location
+          .small-4.columns
+            button#cancelSearchMusician.radius.small.expand Cancel

@@ -11,6 +11,21 @@
       ul.left
       ul.right
         li.divider
+        li
+          a(href="/musicians", class="nav") Musicians
+        li.divider
+        li
+          a(href="/bands", class="nav") Bands
+        li.divider
+        li
+          a(href="/venues", class="nav") Venues
+        li.divider
+        li
+          a(href="/managers", class="nav") Managers
+        li.divider
+        li
+          a(href="/industry", class="nav") Industry
+        li.divider
         if user
           li.has-form: a#authentication-button.button.radius.alert(href="#", data-email=user.email)= user.email
         else

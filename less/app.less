@@ -22,6 +22,9 @@ body{
   display: none;
 }
 .contain-to-grid, nav.top-bar{
+  .nav{
+    color: @baseText;
+  }
   background-color: rgb(26, 26, 26);
   h1 > a{
     color: @baseText;
@@ -139,6 +142,9 @@ body{
 
 #musiciansIndexPage{
   font-family: 'Roboto', Arial, sans-serif; font-weight: 100;
+  #sideNav{
+    margin-top: 25px;
+  }
   #createProfileButton, #editProfileButton, #searchMusiciansButton{
     background-color: @baseText;
     color: @base;
@@ -159,7 +165,7 @@ body{
       color: @baseText;
     }
   }
-  #profileForm, #searchForm{
+  #profileForm, #searchForm, #searchAttributesForm{
     span{
       color: @baseText;
       font-family: 'Roboto', Arial, sans-serif; font-weight: 100;
@@ -199,7 +205,11 @@ body{
         top: -10px;
       }
     }
-    #saveProfile, #cancelProfile, #addGenreButton, #addInstrumentButton, #startSearchMusician, #cancelSearchMusician{
+    #searchMusicianByAttributes, #cancelSearchMusician{
+      position: relative;
+      top: 10px;
+    }
+    #saveProfile, #cancelProfile, #addGenreButton, #addInstrumentButton, #startSearchMusician, #cancelSearchMusician, #searchMusicianByAttributes, #searchMusicianByLocation, #cancelSearchMusician, #musicianReturnLocationSearch{
       background-color: @baseButton;
       border: none;
       color: black;
@@ -215,7 +225,7 @@ body{
       top: 16px;
     }
   }
-  #searchForm{
+  #searchForm, #searchAttributesForm{
     #ageSelectBox{
       position: relative;
       top: -12px;
@@ -275,9 +285,14 @@ body{
   }
   #musicians-map-canvas{
     height: 500px;
-    width: 500px;
+    width: 100%;
     border: 8px solid @baseText;
     border-radius: 15px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    -moz-box-shadow: -7px 6px 8px #000000;
+    -webkit-box-shadow: -7px 6px 8px #000000;
+    box-shadow:  -7px 6px 8px #000000;
     .musicianInfoWindow{
       width: 100%;
       margin: 0;
