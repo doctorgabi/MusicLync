@@ -98,30 +98,23 @@ function clickSearchMusician(){
   // new google.maps.Marker({map: map, position: latLng});
   $('#musicians-map-canvas').removeClass('hidden');
   var url = '/mapDataRequest';
-
   sendAjaxRequest(url, null, 'get', null, null, function(musicians){
     for(var i=0; i< musicians.length; i++){
       var musician = musicians[i];
-      var latLng = new google.maps.LatLng(musicians[i].latitude, musician.longitude);
-      var marker = new google.maps.Marker({map: map, position: latLng, clickable: true});
-      marker.info = new google.maps.InfoWindow({content: '<p>'+ musician.name + '</p><img src="' + musician.photoUrl + '"/>'});
-      addListener(map, marker);
-    }
-    function addListener(map, marker){
-      google.maps.event.addListener(marker, 'click', function(map, marker){
-        marker.info.open(map, marker);
-      });
+      var latLng = new google.maps.LatLng(musician.latitude, musician.longitude);
+      buildInfoWindow(musician, latLng);
     }
   });
+  function buildInfoWindow(musician, latLng){
+    var marker = new google.maps.Marker({map: map, position: latLng, clickable: true});
+    marker.info = new google.maps.InfoWindow({
+      content: '<div class="musicianInfoWindow"><p>' + musician.name + '</p><img src="' + musician.photoUrl + '"/></div>'
+    });
+    google.maps.event.addListener(marker, 'click', function() {
+      marker.info.open(map, marker);
+    });
+  }
 }
-//htmlAddAllMusiciansInfoToMarkers(map, marker, musicians[i]);
-// function htmlAddAllMusiciansInfoToMarkers(map, marker, musician){
-  // google.maps.event.addListener(marker, 'click', function(marker, musician){
-  //   infowindow.setContent('<strong>'+ musician.name + '</strong>');//this was musicians[i] so try that too. Also re-embed this within the above function.
-  //   infowindow.open(map, this);
-  // });
-// }
-// }
 
 function clickProfileSubheader(){
   var $subheader = $(this);
