@@ -17,4 +17,4 @@ Musicians may post links to their own material and social media and may write re
 
 The wider scope of the app would add in Bands, Venues, Managers and Industry. Each will be able to log in and create their own profiles and search for any of the other categories.
 
-This project uses Redis, jade, less,  javascript, jQuery, express, foundation, lodash, grunt, ajax, mongoose, mongoDB, node and hosting with heroku.
+This project uses Redis, jade, less,  javascript, jQuery, express, foundation, lodash, grunt, ajax, mongoose, mongoDB, node and hosting with heroku. Obviously, version control is maintained with GitHub.
