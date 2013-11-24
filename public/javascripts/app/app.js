@@ -106,12 +106,21 @@ function clickSearchMusician(){
     }
   });
   function buildInfoWindow(musician, latLng){
+    var id = musician._id;
     var marker = new google.maps.Marker({map: map, position: latLng, clickable: true});
     marker.info = new google.maps.InfoWindow({
       content: '<div class="musicianInfoWindow"><p>' + musician.name + '</p><img src="' + musician.photoUrl + '"/></div>'
     });
-    google.maps.event.addListener(marker, 'click', function() {
+    google.maps.event.addListener(marker, 'mouseover', function() {
       marker.info.open(map, marker);
+    });
+    google.maps.event.addListener(marker, 'mouseout', function(){
+      marker.info.close();
+    });
+    google.maps.event.addListener(marker, 'click', function(musician){
+      //var url = '/musicians/' + id;
+      // sendAjaxRequest(url, id, 'get', null, null, function(musician, status, jqXHR){
+      window.location.href = '/musicians/' + id;
     });
   }
 }
