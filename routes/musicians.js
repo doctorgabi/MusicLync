@@ -53,15 +53,28 @@ exports.show = function(req, res){
  * GET '/musicians/search'
  */
 exports.searchResults = function(req, res){
+  console.log('---searchResults---');
   var searchData = {};
+  if(req.query.ageGroup){searchData.ageGroup = req.query.ageGroup;}
   if(req.query.name){searchData.name = req.query.name;}
   if(req.query.availableTime){searchData.availableTime = req.query.availableTime;}
   if(req.query.genres){searchData.genres = req.query.genres;}
   if(req.query.instruments){searchData.instruments = req.query.instruments;}
+  console.log(searchData);
   Musician.find(searchData, function(err, musicians){
+    console.log('---find results---');
+
+
     Genre.find(function(err, genres){//finds all genres
       Instrument.find(function(err, instruments){//finds all instruments
-        res.render('musicians/index', {
+
+        console.log('---final---');
+        console.log(err);
+        console.log(musicians.length);
+        console.log(genres.length);
+        console.log(instruments.length);
+
+        res.render('musicians/musicians', {
           title: 'Found Musicians',
           musicians: musicians,
           genres: genres,

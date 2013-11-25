@@ -115,13 +115,19 @@ function clickSearchMusicianByAttributes(){
   $('#searchAttributesForm').removeClass('hidden');
 }
 
-function clickStartSearchMusician(){
+function clickStartSearchMusician(e){
   var form = $('#searchAttributesForm');
-  var data = $(form).serialize();
-  console.log(data);
-  sendAjaxRequest('/musicians/search', data, 'get', null, null, function(musicians, status, jqXHR){
-    // console.log('this is what comes back from the seach musicians by attributes route:');
-    // console.log(musicians);
+  var formSerialized = $(form).serialize();
+
+  var age = $('#ageSearchSelectBox').val();
+  var ageGroup = {'ageGroup': age};
+  var ageSerialized = $.param(ageGroup);
+  var data = ageSerialized + '&' + formSerialized;
+  sendHtmlAjaxRequest('/musicians/search', data, 'get', null, e, function(musicians, status, jqXHR){
+    $('#searchAttributesForm').toggleClass('hidden');
+    $('#musicians').toggleClass('hidden');
+    $('#musicians').empty();
+    $('#musicians').append(musicians);
   });
 }
 

@@ -1,0 +1,6 @@
+each musician in musicians
+  .musician.float
+    p= musician.name
+    a(href="/musicians/#{musician.id}")
+      img#musicianPhoto(src=musician.photoUrl)
+.clear

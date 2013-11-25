@@ -43,3 +43,24 @@ function sendAjaxRequest(url, data, verb, altVerb, event, successFn){
   $.ajax(options);
   if(event) {event.preventDefault();}
 }
+
+function sendHtmlAjaxRequest(url, data, verb, altVerb, event, successFn){
+  var options = {};
+  options.url = url;
+  options.type = verb;
+  options.data = data;
+  options.dataType = 'html';
+  options.success = successFn;
+  options.error = function(jqXHR, status, error){console.log(error);};
+
+  if(altVerb){
+    if(typeof data === 'string'){
+      options.data += '&_method=' + altVerb;
+    } else {
+      options.data._method = altVerb;
+    }
+  }
+
+  $.ajax(options);
+  if(event) {event.preventDefault();}
+}

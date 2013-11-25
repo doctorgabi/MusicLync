@@ -10,7 +10,7 @@ form#searchAttributesForm.hidden(action='/musicians/search', method='get')
           mixin field(4, 'text', 'availableTime', 'Available Time', null, 'e.g. 3hrs per week')
           .small-4.columns
             h6='Age Group:'
-            select#ageSelectBox
+            select#ageSearchSelectBox
               option(name='ageGroup' value="")= 'Any age'
               option(name='ageGroup' value="16-20")= '16-20'
               option(name='ageGroup' value="21-30")= '21-30'
