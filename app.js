@@ -27,6 +27,7 @@ require('./config').initialize(app, RedisStore);
 // routes
 app.get('/', home.index);
 app.post('/users', users.create);
+app.get('/users', users.index);
 app.put('/login', users.login);
 app.delete('/logout', users.logout);
 app.get('/musicians', musicians.index);

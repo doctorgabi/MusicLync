@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var User = mongoose.model('User');
+var Musician = mongoose.model('Musician');
+var Instrument = mongoose.model('Instrument');
+var Genre = mongoose.model('Genre');
 
 exports.create = function(req, res){
   var user = new User();
@@ -44,5 +47,20 @@ exports.login = function(req, res){
 exports.logout = function(req, res){
   req.session.destroy(function(err){
     res.send({status: 'ok'});
+  });
+};
+/*
+ * GET '/users'
+ */
+exports.index = function(req, res){
+  User.find(req.query, function(err, user){
+    var id = user[0]._id;
+    Musician.find({'user':id}, function(err, musicians){
+      Genre.find(function(err, genres){
+        Instrument.find(function(err, instruments){
+          res.send(musicians[0]);
+        });
+      });
+    });
   });
 };

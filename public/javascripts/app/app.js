@@ -1,4 +1,4 @@
-/* global document, sendAjaxRequest, window */
+/* global document, sendAjaxRequest, sendHtmlAjaxRequest, window */
 //io was up there too; don't plan to use sockets.
 
 $(document).ready(initialize);
@@ -20,6 +20,7 @@ function initialize(){
   $('#musiciansIndexPage #profileForm #addInstrumentButton').on('click', clickAddInstrument);
   $('#musiciansIndexPage #profileForm #cancelProfile').on('click', clickCancelProfileSubmit);
   $('#musiciansIndexPage #ViewMyProfileLink').on('click', clickViewMusicianProfile);
+  $('#musiciansIndexPage #editProfileButton').on('click', clickEditMusicianProfile);
   $('#musiciansIndexPage #searchMusiciansButton').on('click', clickSearchMusician);
   $('#musiciansIndexPage #searchMusicianByLocation').on('click', clickSearchMusicianByLocation);
   $('#musiciansIndexPage #searchMusicianByAttributes').on('click', clickSearchMusicianByAttributes);
@@ -50,7 +51,6 @@ function initMap(lat, lng, zoom){
 //-------------------------------------------------------------------//
 //-------------------------Click Handlers----------------------------//
 //-------------------------------------------------------------------//
-
 
 function clickRegister(e){
   var url = '/users';
@@ -87,6 +87,20 @@ function clickAuthenticationButton(e){
 
 function clickCreateMusicianProfile(){
   $('#musiciansIndexPage #profileForm').removeClass('hidden');
+}
+
+function clickEditMusicianProfile(){
+  $('#musiciansIndexPage #musicians').toggleClass('hidden');
+  var email = $('#authentication-button').text();
+  var data = {'email': email};
+  console.log(data);
+  sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
+    console.log(musician.name);
+    $('#musiciansIndexPage #profileForm').toggleClass('hidden');
+    $('#musiciansIndexPage #profileForm #updateProfile').toggleClass('hidden');
+    $('#musiciansIndexPage #profileForm #saveProfile').toggleClass('hidden');
+    htmlPopulateProfileForm(musician);
+  });
 }
 
 function clickSearchMusician(){
@@ -292,4 +306,40 @@ function mapMarkerBuildInfoWindow(map, musician, latLng){
   google.maps.event.addListener(marker, 'click', function(musician){
     window.location.href = '/musicians/' + id;
   });
+}
+
+//-------from edit my profile button---------//
+function htmlPopulateProfileForm(musician){
+  $('#musiciansIndexPage #profileForm #name').val(musician.name);
+  $('#musiciansIndexPage #profileForm #location').val(musician.location);
+  $('#musiciansIndexPage #profileForm #availableTime').val(musician.availableTime);
+  $('#musiciansIndexPage #profileForm #ageSelectBox').val(musician.ageGroup);
+  $('#musiciansIndexPage #profileForm #photoUrl').val(musician.photoUrl);
+  $('#musiciansIndexPage #profileForm #genres').val(musician.genres);
+  $('#musiciansIndexPage #profileForm #instruments').val(musician.instruments);
+  $('#musiciansIndexPage #profileForm #instrumentsTaught').val(musician.instrumentsTaught);
+  $('#musiciansIndexPage #profileForm #instrumentsOwned').val(musician.instrumentsOwned);
+  $('#musiciansIndexPage #profileForm #equipmentAccess').val(musician.equipmentAccess);
+  $('#musiciansIndexPage #profileForm #hasPracticeSpace').val(musician.hasPracticeSpace);
+  $('#musiciansIndexPage #profileForm #skills').val(musician.skills);
+  $('#musiciansIndexPage #profileForm #hasEquipmentTransport').val(musician.hasEquipmentTransport);
+  $('#musiciansIndexPage #profileForm #wantsToPractice').val(musician.wantsToPractice);
+  $('#musiciansIndexPage #profileForm #wantsToPerform').val(musician.wantsToPerform);
+  $('#musiciansIndexPage #profileForm #wantsTeacher').val(musician.wantsTeacher);
+  $('#musiciansIndexPage #profileForm #feePerHourGig').val(musician.feePerHourGig);
+  $('#musiciansIndexPage #profileForm #feePerHourTeach').val(musician.feePerHourTeach);
+  $('#musiciansIndexPage #profileForm #feePerHourEquipment').val(musician.feePerHourEquipment);
+  $('#musiciansIndexPage #profileForm #influences').val(musician.influences);
+  $('#musiciansIndexPage #profileForm #website').val(musician.website);
+  $('#musiciansIndexPage #profileForm #videoUrl').val(musician.videoUrl);
+  $('#musiciansIndexPage #profileForm #audioUrl').val(musician.audioUrl);
+  $('#musiciansIndexPage #profileForm #venueReviews').val(musician.venueReviews);
+  $('#musiciansIndexPage #profileForm #bandReviews').val(musician.bandReviews);
+  $('#musiciansIndexPage #profileForm #gigDates').val(musician.gigDates);
+  $('#musiciansIndexPage #profileForm #gigVenues').val(musician.gigVenues);
+  $('#musiciansIndexPage #profileForm #bio').val(musician.bio);
+  $('#musiciansIndexPage #profileForm #googlePlusLink').val(musician.googlePlusLink);
+  $('#musiciansIndexPage #profileForm #facebookLink').val(musician.facebookLink);
+  $('#musiciansIndexPage #profileForm #twitterLink').val(musician.twitterLink);
+  $('#musiciansIndexPage #profileForm #linkedInLink').val(musician.linkedInLink);
 }

@@ -8,9 +8,9 @@ form#profileForm.hidden(action='/musicians', method='post')
       a(href="#")
         h5 About you:
         .form#about.hidden
-          mixin field(3, 'text', 'name', 'Name', null, null, true)
+          mixin field(3, 'text', 'name', 'Name', null, null, true, 'name')
           mixin field(3, 'text', 'location', 'Location', null, null, false, 'location')
-          mixin field(3, 'text', 'availableTime', 'Available Time (hrs/wk)', null, '3')
+          mixin field(3, 'text', 'availableTime', 'Available Time (hrs/wk)', null, '3', false, 'availableTime')
           .small-3.columns
             h6='Age Group'
             select#ageSelectBox
@@ -24,21 +24,21 @@ form#profileForm.hidden(action='/musicians', method='post')
               option(name='ageGroup' value="81-90")= '81-90'
               option(name='ageGroup' value="91-100")= '91-100'
           .row
-            mixin field(6, 'text', 'photoUrl', 'Photo URL')
-            mixin field(6, 'text', 'influences', 'Influences')
+            mixin field(6, 'text', 'photoUrl', 'Photo URL', null, null, false, 'photoUrl')
+            mixin field(6, 'text', 'influences', 'Influences', null, null, false, 'influences')
           .row
             .small-7.columns
               #profileFormGenres
                 each genre in genres
                   span= "    " + genre.name + ":  "
-                    input(type='checkbox', value=genre.id, name='genres')
+                    input(type='checkbox', value=genre.id, name='genres', id='genres')
             .small-5.columns
               p= "Don't see your genre? Add it below:"
               mixin field(6, 'text', 'genre', 'New Genre', null, null, false, 'AddNewGenre')
               .button.small.radius#addGenreButton Add Genre
           .row
             label(for='bio') Bio:
-            textarea#bio(name='bio')
+            textarea#bio(name='bio', id='bio')
 
     .row
       a(href="#")
@@ -49,75 +49,77 @@ form#profileForm.hidden(action='/musicians', method='post')
               #profileFormInstruments
                 each instrument in instruments
                   span= "    " + instrument.name + ":  "
-                    input(type='checkbox', value=instrument.id, name='instruments')
+                    input(type='checkbox', value=instrument.id, name='instruments', id='instruments')
             .small-5.columns
               p= "Don't see your instrument? Add it below:"
-              mixin field(6, 'text', 'instrumentsPlayed', 'New Instrument', null, null, false, 'AddNewInstrument')
+              mixin field(6, 'text', 'instrumentsPlayed', 'New Instrument', null, null, true, 'AddNewInstrument')
               .button.small.radius#addInstrumentButton Add Instrument
           .row
             .small-12.columns
-              mixin field(4, 'text', 'abilityLevel', 'Ability Level', null, 'e.g. beginner')
-              mixin field(4, 'text', 'skills', 'Other Skills', null, 'e.g. Songwriter')
-              mixin field(4, 'text', 'instrumentsTaught', 'Instruments you teach')//-change to a dropdown? populate with instruments?
+              mixin field(4, 'text', 'abilityLevel', 'Ability Level', null, 'e.g. beginner', false, 'abilityLevel')
+              mixin field(4, 'text', 'skills', 'Other Skills', null, 'e.g. Songwriter', false, 'skills')
+              mixin field(4, 'text', 'instrumentsTaught', 'Instruments you teach', null, null, false, 'instrumentsTaught')//-change to a dropdown? populate with instruments?
 
     .row
       a(href="#")
         h5 Your material:
         .form#material.hidden
-          mixin field(4, 'text', 'website', 'Your website URL', null, null, true)
-          mixin field(4, 'text', 'videoUrl', 'Your video URL')
-          mixin field(4, 'text', 'audioUrl', 'Your audio URL')
+          mixin field(4, 'text', 'website', 'Your website URL', null, null, true, 'website')
+          mixin field(4, 'text', 'videoUrl', 'Your video URL', null, null, false, 'videoUrl')
+          mixin field(4, 'text', 'audioUrl', 'Your audio URL', null, null, false, 'audioUrl')
 
     .row
       a(href="#")
         h5 Your stuff:
         .form#stuff.hidden
-          mixin field(6, 'text', 'instrumentsOwned', 'Instruments you Own', null, null, true)
-          mixin field(6, 'text', 'hasPracticeSpace', 'Do you have practice space?')
+          mixin field(6, 'text', 'instrumentsOwned', 'Instruments you Own', null, null, true, 'instrumentsOwned')
+          mixin field(6, 'text', 'hasPracticeSpace', 'Do you have practice space?', null, null, false, 'hasPracticeSpace')
           .row
-            mixin field(6, 'text', 'hasEquipmentTransport', 'Do you have equipment transport?', null, 'e.g. for a band plus equipment')
-            mixin field(6, 'text', 'equipmentAccess', 'What other equipment do you have access to?', null, 'e.g. recording equipment')
+            mixin field(6, 'text', 'hasEquipmentTransport', 'Do you have equipment transport?', null, 'e.g. for a band plus equipment', false, 'hasEquipmentTransport')
+            mixin field(6, 'text', 'equipmentAccess', 'What other equipment do you have access to?', null, 'e.g. recording equipment', false, 'equipmentAccess')
 
     .row
       a(href="#")
         h5 Social Media:
         .form#social.hidden
-          mixin field(3, 'text', 'googlePlusLink', 'Google+ URL', null, null, true)
-          mixin field(3, 'text', 'facebookLink', 'Facebook URL')
-          mixin field(3, 'text', 'twitterLink', 'Twitter URL')
-          mixin field(3, 'text', 'linkedInLink', 'LinkedIn URL')
+          mixin field(3, 'text', 'googlePlusLink', 'Google+ URL', null, null, true, 'googlePlusLink')
+          mixin field(3, 'text', 'facebookLink', 'Facebook URL', null, null, false, 'facebookLink')
+          mixin field(3, 'text', 'twitterLink', 'Twitter URL', null, null, false, 'twitterLink')
+          mixin field(3, 'text', 'linkedInLink', 'LinkedIn URL', null, null, false, 'linkedInLink')
 
     .row
       a(href="#")
         h5 What do you want?:
         .form#wants.hidden
-          mixin field(4, 'text', 'wantsToPractice', 'Do you want to practice?', null, null, true)
-          mixin field(4, 'text', 'wantsToPerform', 'Do you want to perform?')
-          mixin field(4, 'text', 'wantsTeacher', 'Do you need a teacher?')
+          mixin field(4, 'text', 'wantsToPractice', 'Do you want to practice?', null, null, true, 'wantsToPractice')
+          mixin field(4, 'text', 'wantsToPerform', 'Do you want to perform?', null, null, false, 'wantsToPerform')
+          mixin field(4, 'text', 'wantsTeacher', 'Do you need a teacher?', null, null, false, 'wantsTeacher')
 
     .row
       a(href="#")
         h5 What do you charge?:
         .form#fees.hidden
-          mixin field(4, 'text', 'feePerHourGig', 'Your hourly fee for a gig', null, null, true)
-          mixin field(4, 'text', 'feePerHourEquipment', 'Your hourly fee for equipment hire')
-          mixin field(4, 'text', 'feePerHourTeach', 'Your hourly fee for teaching')
+          mixin field(4, 'text', 'feePerHourGig', 'Your hourly fee for a gig', null, null, true, 'feePerHourGig')
+          mixin field(4, 'text', 'feePerHourEquipment', 'Your hourly fee for equipment hire', null, null, false, 'feePerHourEquipment')
+          mixin field(4, 'text', 'feePerHourTeach', 'Your hourly fee for teaching', null, null, false, 'feePerHourTeach')
 
     .row
       a(href="#")
         h5 Your gigs:
         .form#gigs.hidden
-          mixin field(6, 'text', 'gigDates', 'When is your gig?', null, null, true)
-          mixin field(6, 'text', 'gigVenues', 'Where is your gig?')
+          mixin field(6, 'text', 'gigDates', 'When is your gig?', null, null, true, 'gigDates')
+          mixin field(6, 'text', 'gigVenues', 'Where is your gig?', null, null, false, 'gigVenues')
 
     .row
       a(href="#")
         h5 Your reviews:
         .form#reviews.hidden
-          mixin field(6, 'text', 'venueReviews', 'Venue Reviews', null, null, true)
-          mixin field(6, 'text', 'bandReviews', 'Band Reviews')
+          mixin field(6, 'text', 'venueReviews', 'Venue Reviews', null, null, true, 'venueReviews')
+          mixin field(6, 'text', 'bandReviews', 'Band Reviews', null, null, false, 'bandReviews')
     .row
       .small-2.columns
         button#saveProfile.radius.small.expand(type='submit') Save
+      .small-2.columns
+        button#updateProfile.hidden.radius.small.expand(type='submit') Update
       .small-2.columns
         button#cancelProfile.radius.small.expand Cancel
