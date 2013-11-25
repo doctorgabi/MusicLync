@@ -21,6 +21,8 @@ function initialize(){
   $('#musiciansIndexPage #profileForm #cancelProfile').on('click', clickCancelProfileSubmit);
   $('#musiciansIndexPage #ViewMyProfileLink').on('click', clickViewMusicianProfile);
   $('#musiciansIndexPage #editProfileButton').on('click', clickEditMusicianProfile);
+  $('#musiciansIndexPage #profileForm #updateProfile').on('click', clickUpdateProfile);
+  // $('#musiciansIndexPage #profileForm #deleteProfile').on('click', clickDeleteProfile);
   $('#musiciansIndexPage #searchMusiciansButton').on('click', clickSearchMusician);
   $('#musiciansIndexPage #searchMusicianByLocation').on('click', clickSearchMusicianByLocation);
   $('#musiciansIndexPage #searchMusicianByAttributes').on('click', clickSearchMusicianByAttributes);
@@ -87,70 +89,13 @@ function clickAuthenticationButton(e){
 
 function clickCreateMusicianProfile(){
   $('#musiciansIndexPage #profileForm').removeClass('hidden');
-}
-
-function clickEditMusicianProfile(){
   $('#musiciansIndexPage #musicians').toggleClass('hidden');
-  var email = $('#authentication-button').text();
-  var data = {'email': email};
-  console.log(data);
-  sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
-    console.log(musician.name);
-    $('#musiciansIndexPage #profileForm').toggleClass('hidden');
-    $('#musiciansIndexPage #profileForm #updateProfile').toggleClass('hidden');
-    $('#musiciansIndexPage #profileForm #saveProfile').toggleClass('hidden');
-    htmlPopulateProfileForm(musician);
-  });
 }
 
-function clickSearchMusician(){
-  $('#musicians').addClass('hidden');
-  $('#searchForm').removeClass('hidden');
-}
 
-function clickSearchMusicianByLocation(){
-  var place = $('#searchLocation').val();
 
-  var geocoder = new google.maps.Geocoder();
-  geocoder.geocode({address: place}, function(results, status){
-    var location = {};
-    location.lat = results[0].geometry.location.ob;
-    location.long = results[0].geometry.location.pb;//refactor these three lines just to lines lat & lng?
 
-    var lat = location.lat;
-    var lng = location.long;
-    htmlUpdateMusiciansMap(lat, lng);
-  });
-}
-
-function clickSearchMusicianByAttributes(){
-  $('#musicians-map-canvas').addClass('hidden');
-  $('#searchForm').toggleClass('hidden');
-  $('#searchAttributesForm').removeClass('hidden');
-}
-
-function clickStartSearchMusician(e){
-  var form = $('#searchAttributesForm');
-  var formSerialized = $(form).serialize();
-
-  var age = $('#ageSearchSelectBox').val();
-  var ageGroup = {'ageGroup': age};
-  var ageSerialized = $.param(ageGroup);
-  var data = ageSerialized + '&' + formSerialized;
-  sendHtmlAjaxRequest('/musicians/search', data, 'get', null, e, function(musicians, status, jqXHR){
-    $('#searchAttributesForm').toggleClass('hidden');
-    $('#musicians').toggleClass('hidden');
-    $('#musicians').empty();
-    $('#musicians').append(musicians);
-  });
-}
-
-function clickMusicianReturnLocationSearch(e){
-  $('#musicians-map-canvas').toggleClass('hidden');
-  $('#searchForm').toggleClass('hidden');
-  $('#searchAttributesForm').toggleClass('hidden');
-  e.preventDefault();
-}
+//********Profile create, update or delete******//
 
 function clickProfileSubheader(){
   var $subheader = $(this);
@@ -204,8 +149,101 @@ function clickSaveProfile(e){
 function clickCancelProfileSubmit(e){
   $('#musiciansIndexPage #profileForm input').val('');
   $('#musiciansIndexPage #profileForm').addClass('hidden');
+  $('#musiciansIndexPage #musicians').toggleClass('hidden');
   e.preventDefault();
 }
+
+function clickEditMusicianProfile(){
+  $('#musiciansIndexPage #musicians').toggleClass('hidden');
+  var email = $('#authentication-button').text();
+  var data = {'email': email};
+  console.log(data);
+  sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
+    console.log(musician.name);
+    $('#musiciansIndexPage #profileForm').toggleClass('hidden');
+    $('#musiciansIndexPage #profileForm #updateProfile').toggleClass('hidden');
+    $('#musiciansIndexPage #profileForm #saveProfile').toggleClass('hidden');
+    $('#musiciansIndexPage #profileForm #deleteProfile').toggleClass('hidden');
+    htmlPopulateProfileForm(musician);
+  });
+}
+
+function clickUpdateProfile(){
+  var form = $('#musiciansIndexPage #profileForm').val();
+
+  var age = $('#ageSelectBox').val();
+  var ageGroup = {'ageGroup': age};
+
+  var ageSerialized = $.param(ageGroup);
+  var formSerialized = $(form).serialize();
+
+  var data = ageSerialized + '&' + formSerialized;
+  console.log(data);
+
+  // var url = '/musicians/' +
+  // sendAjaxRequest(, data, 'post', 'put', null, function(musician, status, jqXHR){
+  //   htmlUpdateMusicians(musician);
+  // });
+  // e.preventDefault();
+}
+
+
+
+//*******musician search functions**********//
+
+function clickSearchMusician(){
+  $('#musicians').addClass('hidden');
+  $('#searchForm').removeClass('hidden');
+}
+
+function clickSearchMusicianByLocation(){
+  var place = $('#searchLocation').val();
+
+  var geocoder = new google.maps.Geocoder();
+  geocoder.geocode({address: place}, function(results, status){
+    var location = {};
+    location.lat = results[0].geometry.location.ob;
+    location.long = results[0].geometry.location.pb;//refactor these three lines just to lines lat & lng?
+
+    var lat = location.lat;
+    var lng = location.long;
+    htmlUpdateMusiciansMap(lat, lng);
+  });
+}
+
+function clickSearchMusicianByAttributes(){
+  $('#musicians-map-canvas').addClass('hidden');
+  $('#searchForm').toggleClass('hidden');
+  $('#searchAttributesForm').removeClass('hidden');
+}
+
+function clickStartSearchMusician(e){
+  var form = $('#searchAttributesForm');
+  var formSerialized = $(form).serialize();
+
+  var age = $('#ageSearchSelectBox').val();
+  var ageGroup = {'ageGroup': age};
+  var ageSerialized = $.param(ageGroup);
+  var data = ageSerialized + '&' + formSerialized;
+  sendHtmlAjaxRequest('/musicians/search', data, 'get', null, e, function(musicians, status, jqXHR){
+    $('#searchAttributesForm').toggleClass('hidden');
+    $('#musicians').toggleClass('hidden');
+    $('#musicians').empty();
+    $('#musicians').append(musicians);
+  });
+}
+
+function clickMusicianReturnLocationSearch(e){
+  $('#musicians-map-canvas').toggleClass('hidden');
+  $('#searchForm').toggleClass('hidden');
+  $('#searchAttributesForm').toggleClass('hidden');
+  e.preventDefault();
+}
+
+
+
+
+//***********view musician links************//
 
 function clickMusicianLink(e){
   var musicianId = $(this).attr('href');//contains the url with id

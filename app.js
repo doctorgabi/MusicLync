@@ -34,6 +34,8 @@ app.get('/musicians', musicians.index);
 app.get('/musicians/search', musicians.searchResults);
 app.post('/musicians', musicians.create);
 app.get('/musicians/:id', musicians.show);
+app.put('/musicians/:id', musicians.update);
+app.delete('/musicians/:id', musicians.delete);
 app.get('/mapDataRequest', musicians.mapAll);
 app.get('/mapDataRequest/:id', musicians.map);
 app.post('/genres', genres.create);

@@ -85,6 +85,43 @@ exports.searchResults = function(req, res){
   });
 };
 
+/*
+ * PUT '/musicians/:id'
+ */
+exports.update = function(req, res){
+
+};
+
+// exports.update = function(req, res){
+//   Song.findById(req.params.id, function(err, oldSong){
+//     Genre.find().where('_id').in(oldSong.genres).exec(function(err, genres){
+//       for(var i = 0; i < genres.length; i++){
+//         genres[i].songs.pull(oldSong.id);
+//         genres[i].save();
+//       }
+//     });
+
+//     Song.findByIdAndUpdate(req.params.id, req.body, function(songErr, song){
+//       Genre.find().where('_id').in(song.genres).exec(function(err, genres){
+//         for(var i = 0; i < genres.length; i++){
+//           genres[i].songs.push(song.id);
+//           genres[i].save();
+//         }
+//       });
+
+//       res.redirect('/songs');
+//     });
+//   });
+// };
+
+/*
+ * DELETE '/musicians/:id'
+ */
+exports.delete = function(req, res){
+
+};
+
+
 
 /*
  * GET '/mapDataRequest'
