@@ -30,6 +30,7 @@ app.post('/users', users.create);
 app.put('/login', users.login);
 app.delete('/logout', users.logout);
 app.get('/musicians', musicians.index);
+app.get('/musicians/search', musicians.searchResults);
 app.post('/musicians', musicians.create);
 app.get('/musicians/:id', musicians.show);
 app.get('/mapDataRequest', musicians.mapAll);

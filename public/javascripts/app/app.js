@@ -23,6 +23,7 @@ function initialize(){
   $('#musiciansIndexPage #searchMusiciansButton').on('click', clickSearchMusician);
   $('#musiciansIndexPage #searchMusicianByLocation').on('click', clickSearchMusicianByLocation);
   $('#musiciansIndexPage #searchMusicianByAttributes').on('click', clickSearchMusicianByAttributes);
+  $('#musiciansIndexPage #startSearchMusician').on('click', clickStartSearchMusician);
   $('#musiciansIndexPage #musicianReturnLocationSearch').on('click', clickMusicianReturnLocationSearch);
   initMap(lat, lng, 13);
 }
@@ -109,9 +110,19 @@ function clickSearchMusicianByLocation(){
 }
 
 function clickSearchMusicianByAttributes(){
-  $('#musicians-map-canvas').toggleClass('hidden');
+  $('#musicians-map-canvas').addClass('hidden');
   $('#searchForm').toggleClass('hidden');
   $('#searchAttributesForm').removeClass('hidden');
+}
+
+function clickStartSearchMusician(){
+  var form = $('#searchAttributesForm');
+  var data = $(form).serialize();
+  console.log(data);
+  sendAjaxRequest('/musicians/search', data, 'get', null, null, function(musicians, status, jqXHR){
+    // console.log('this is what comes back from the seach musicians by attributes route:');
+    // console.log(musicians);
+  });
 }
 
 function clickMusicianReturnLocationSearch(e){
@@ -226,7 +237,7 @@ function htmlLogout(data){
 
 
 //-------------------------------------------------------------------//
-//-------------------------All Musicians Page------------------------//
+//------------------All Musicians Page HTML changes------------------//
 //-------------------------------------------------------------------//
 
 //-----from submit new musician profile form-----//

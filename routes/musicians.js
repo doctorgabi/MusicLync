@@ -48,6 +48,31 @@ exports.show = function(req, res){
   });
 };
 
+
+/*
+ * GET '/musicians/search'
+ */
+exports.searchResults = function(req, res){
+  var searchData = {};
+  if(req.query.name){searchData.name = req.query.name;}
+  if(req.query.availableTime){searchData.availableTime = req.query.availableTime;}
+  if(req.query.genres){searchData.genres = req.query.genres;}
+  if(req.query.instruments){searchData.instruments = req.query.instruments;}
+  Musician.find(searchData, function(err, musicians){
+    Genre.find(function(err, genres){//finds all genres
+      Instrument.find(function(err, instruments){//finds all instruments
+        res.render('musicians/index', {
+          title: 'Found Musicians',
+          musicians: musicians,
+          genres: genres,
+          instruments: instruments
+        });
+      });
+    });
+  });
+};
+
+
 /*
  * GET '/mapDataRequest'
  */
