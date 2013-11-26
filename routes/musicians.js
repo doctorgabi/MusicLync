@@ -89,9 +89,8 @@ exports.getId = function(req, res){
  * PUT '/musicians/:id'
  */
 exports.update = function(req, res){
-  var query = {'name': req.body.name};
+  var query = {'user': req.body.user};
   var options = {new: true};
-  console.log(req.body);
   Musician.findOneAndUpdate(query, { $set: {
     name                  : req.body.name,
     location              : req.body.location,

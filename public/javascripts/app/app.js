@@ -21,6 +21,7 @@ function initialize(){
   $('#musiciansIndexPage #profileForm #cancelProfile').on('click', clickCancelProfileSubmit);
   $('#musiciansIndexPage #ViewMyProfileLink').on('click', clickViewMusicianProfile);
   $('#musiciansIndexPage #editProfileButton').on('click', clickEditMusicianProfile);
+  $('#musiciansIndexPage #EditmyProfileLink').on('click', clickEditMusicianProfile);
   $('#musiciansIndexPage #profileForm #updateProfile').on('click', clickUpdateProfile);
   // $('#musiciansIndexPage #profileForm #deleteProfile').on('click', clickDeleteProfile);
   $('#musiciansIndexPage #searchMusiciansButton').on('click', clickSearchMusician);
@@ -158,8 +159,10 @@ function clickEditMusicianProfile(){
   var email = $('#authentication-button').text();
   var data = {'email': email};
   sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
-    console.log(musician.name);
+    console.log(musician.user);
+    var $id = $('<p class="hidden">' + musician.user + '</p>');
     $('#musiciansIndexPage #profileForm').toggleClass('hidden');
+    $('#musiciansIndexPage #profileForm #updateProfile').append($id);
     $('#musiciansIndexPage #profileForm #updateProfile').toggleClass('hidden');
     $('#musiciansIndexPage #profileForm #saveProfile').toggleClass('hidden');
     $('#musiciansIndexPage #profileForm #deleteProfile').toggleClass('hidden');
@@ -182,22 +185,21 @@ function clickUpdateProfile(e){
       longitude  : location.coordinates.lng()
     };
     var locSerialized = $.param(locdata);
-    var name = $('#musiciansIndexPage #profileForm #name').val();
-    name = {'name': name};
-    var url = '/musiciansGetId';
-    sendAjaxRequest(url, name, 'get', null, e, function(id, status, jqXHR){
-      var form = $('#musiciansIndexPage #profileForm');
-      var age = $('#ageSelectBox').val();
-      var ageGroup = {'ageGroup': age};
 
-      var ageSerialized = $.param(ageGroup);
-      var formSerialized = $(form).serialize();
+    var user = $('#musiciansIndexPage #profileForm #updateProfile p').text();
+    user = {'user': user};
+    var form = $('#musiciansIndexPage #profileForm');
+    var age = $('#ageSelectBox').val();
+    var ageGroup = {'ageGroup': age};
 
-      var data = ageSerialized + '&' + formSerialized + '&' + locSerialized;
-      var url = '/musicians/' + id;
-      sendAjaxRequest(url, data, 'post', 'put', e, function(musician, status, jqXHR){
-        htmlUpdateMusicians(musician);
-      });
+    var ageSerialized = $.param(ageGroup);
+    var formSerialized = $(form).serialize();
+    var userSerialized = $.param(user);
+
+    var data = userSerialized + '&' + ageSerialized + '&' + formSerialized + '&' + locSerialized;
+    var url = '/musicians/' + user;
+    sendAjaxRequest(url, data, 'post', 'put', e, function(musician, status, jqXHR){
+      htmlUpdateMusicians(musician);
     });
   });
   e.preventDefault();
@@ -364,6 +366,7 @@ function mapMarkerBuildInfoWindow(map, musician, latLng){
 }
 
 //-------from edit my profile button---------//
+
 function htmlPopulateProfileForm(musician){
   $('#musiciansIndexPage #profileForm #name').val(musician.name);
   $('#musiciansIndexPage #profileForm #location').val(musician.location);
