@@ -157,7 +157,6 @@ function clickEditMusicianProfile(){
   $('#musiciansIndexPage #musicians').toggleClass('hidden');
   var email = $('#authentication-button').text();
   var data = {'email': email};
-  console.log(data);
   sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
     console.log(musician.name);
     $('#musiciansIndexPage #profileForm').toggleClass('hidden');
@@ -168,23 +167,40 @@ function clickEditMusicianProfile(){
   });
 }
 
-function clickUpdateProfile(){
-  var form = $('#musiciansIndexPage #profileForm').val();
+function clickUpdateProfile(e){
+  var place = $('#location').val();
+  var geocoder = new google.maps.Geocoder();
 
-  var age = $('#ageSelectBox').val();
-  var ageGroup = {'ageGroup': age};
+  geocoder.geocode({address: place}, function(results, status){
+    var location = {};
+    location.name = results[0].formattedAddress;
+    location.coordinates = results[0].geometry.location;
 
-  var ageSerialized = $.param(ageGroup);
-  var formSerialized = $(form).serialize();
+    var locdata = {
+      locname : location.name,
+      latitude  : location.coordinates.lat(),
+      longitude  : location.coordinates.lng()
+    };
+    var locSerialized = $.param(locdata);
+    var name = $('#musiciansIndexPage #profileForm #name').val();
+    name = {'name': name};
+    var url = '/musiciansGetId';
+    sendAjaxRequest(url, name, 'get', null, e, function(id, status, jqXHR){
+      var form = $('#musiciansIndexPage #profileForm');
+      var age = $('#ageSelectBox').val();
+      var ageGroup = {'ageGroup': age};
 
-  var data = ageSerialized + '&' + formSerialized;
-  console.log(data);
+      var ageSerialized = $.param(ageGroup);
+      var formSerialized = $(form).serialize();
 
-  // var url = '/musicians/' +
-  // sendAjaxRequest(, data, 'post', 'put', null, function(musician, status, jqXHR){
-  //   htmlUpdateMusicians(musician);
-  // });
-  // e.preventDefault();
+      var data = ageSerialized + '&' + formSerialized + '&' + locSerialized;
+      var url = '/musicians/' + id;
+      sendAjaxRequest(url, data, 'post', 'put', e, function(musician, status, jqXHR){
+        htmlUpdateMusicians(musician);
+      });
+    });
+  });
+  e.preventDefault();
 }
 
 
@@ -304,6 +320,7 @@ function htmlUpdateMusicians(musician){
   $('#successNotifier').removeClass('hidden');
   $('#ViewMyProfileLink').attr('href', '/musicians/'+musician._id);
 }
+
 function htmlUpdateProfileFormGenres(genre){
   var $genre = $('<span>'+genre.name+'<input type="checkbox" value="'+genre.id+'" name="genres"></input></span>');
   $('#profileFormGenres').append($genre);
@@ -381,3 +398,11 @@ function htmlPopulateProfileForm(musician){
   $('#musiciansIndexPage #profileForm #twitterLink').val(musician.twitterLink);
   $('#musiciansIndexPage #profileForm #linkedInLink').val(musician.linkedInLink);
 }
+
+// function getMusicianIdByName(name){
+//   var url = '/musiciansGetId';
+//   sendAjaxRequest(url, name, 'get', null, null, function(id, status, jqXHR){
+//     console.log(id);
+//     //call the rest of the steps in here as it's asynchronous
+//   });
+// }

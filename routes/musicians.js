@@ -60,20 +60,9 @@ exports.searchResults = function(req, res){
   if(req.query.availableTime){searchData.availableTime = req.query.availableTime;}
   if(req.query.genres){searchData.genres = req.query.genres;}
   if(req.query.instruments){searchData.instruments = req.query.instruments;}
-  console.log(searchData);
   Musician.find(searchData, function(err, musicians){
-    console.log('---find results---');
-
-
     Genre.find(function(err, genres){//finds all genres
       Instrument.find(function(err, instruments){//finds all instruments
-
-        console.log('---final---');
-        console.log(err);
-        console.log(musicians.length);
-        console.log(genres.length);
-        console.log(instruments.length);
-
         res.render('musicians/musicians', {
           title: 'Found Musicians',
           musicians: musicians,
@@ -86,33 +75,61 @@ exports.searchResults = function(req, res){
 };
 
 /*
+ * GET '/musiciansGetId'
+ */
+
+exports.getId = function(req, res){
+  Musician.find(req.query, function(err, musicians){
+    res.send(musicians[0].user);
+  });
+};
+
+
+/*
  * PUT '/musicians/:id'
  */
 exports.update = function(req, res){
-
+  var query = {'name': req.body.name};
+  var options = {new: true};
+  console.log(req.body);
+  Musician.findOneAndUpdate(query, { $set: {
+    name                  : req.body.name,
+    location              : req.body.location,
+    latitude              : req.body.latitude,
+    longitude             : req.body.longitude,
+    instruments           : req.body.instruments,
+    instrumentsTaught     : req.body.instrumentsTaught,
+    instrumentsOwned      : req.body.instrumentsOwned,
+    equipmentAccess       : req.body.equipmentAccess,
+    hasPracticeSpace      : req.body.hasPracticeSpace,
+    skills                : req.body.skills,
+    hasEquipmentTransport : req.body.hasEquipmentTransport,
+    availableTime         : req.body.availableTime,
+    ageGroup              : req.body.ageGroup,
+    wantsToPractice       : req.body.wantsToPractice,
+    wantsTeacher          : req.body.wantsTeacher,
+    feePerHourGig         : req.body.feePerHourGig,
+    feePerHourTeach       : req.body.feePerHourTeach,
+    feePerHourEquipment   : req.body.feePerHourEquipment,
+    influences            : req.body.influences,
+    genres                : req.body.genres,
+    photoUrl              : req.body.photoUrl,
+    website               : req.body.website,
+    videoUrl              : req.body.videoUrl,
+    audioUrl              : req.body.audioUrl,
+    venueReviews          : req.body.venueReviews,
+    bandReviews           : req.body.bandReviews,
+    gigDates              : req.body.gigDates,
+    gigVenues             : req.body.gigVenues,
+    bio                   : req.body.bio,
+    googlePlusLink        : req.body.googlePlusLink,
+    facebookLink          : req.body.facebookLink,
+    twitterLink           : req.body.twitterLink,
+    linkedInLink          : req.body.linkedInLink
+  }}, options, function(err, musician) {
+    res.send(musician);
+  });
 };
-
-// exports.update = function(req, res){
-//   Song.findById(req.params.id, function(err, oldSong){
-//     Genre.find().where('_id').in(oldSong.genres).exec(function(err, genres){
-//       for(var i = 0; i < genres.length; i++){
-//         genres[i].songs.pull(oldSong.id);
-//         genres[i].save();
-//       }
-//     });
-
-//     Song.findByIdAndUpdate(req.params.id, req.body, function(songErr, song){
-//       Genre.find().where('_id').in(song.genres).exec(function(err, genres){
-//         for(var i = 0; i < genres.length; i++){
-//           genres[i].songs.push(song.id);
-//           genres[i].save();
-//         }
-//       });
-
-//       res.redirect('/songs');
-//     });
-//   });
-// };
 
 /*
  * DELETE '/musicians/:id'
