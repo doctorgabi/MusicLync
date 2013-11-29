@@ -23,7 +23,7 @@ function initialize(){
   $('#musiciansIndexPage #ViewMyProfileLink').on('click', clickViewMusicianProfile);
   $('#musiciansIndexPage #editProfileButton').on('click', clickEditMusicianProfile);
   $('#musiciansIndexPage #profileForm #updateProfile').on('click', clickUpdateProfile);
-  // $('#musiciansIndexPage #profileForm #deleteProfile').on('click', clickDeleteProfile);
+  $('#musiciansIndexPage #profileForm #deleteProfile').on('click', clickDeleteProfile);
   $('#musiciansIndexPage #searchMusiciansButton').on('click', clickSearchMusician);
   $('#musiciansIndexPage #searchMusicianByLocation').on('click', clickSearchMusicianByLocation);
   $('#musiciansIndexPage #searchMusicianByAttributes').on('click', clickSearchMusicianByAttributes);
@@ -104,8 +104,39 @@ function clickCreateMusicianProfile(){
   }
 }
 
+function clickEditMusicianProfile(){
+  $('#musiciansIndexPage #musicians').toggleClass('hidden');
+  var email = $('#authentication-button').text();
+  var data = {'email': email};
+  sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
+    console.log(musician.user);
+    //the next line was added back in from a previous version:
+    var $id = $('<p class="hidden">' + musician.user + '</p>');
+    $('#musiciansIndexPage #profileForm').toggleClass('hidden');
+    //so was the next line:
+    $('#musiciansIndexPage #profileForm #updateProfile').append($id);
+    $('#musiciansIndexPage #profileForm #updateProfile').toggleClass('hidden');
+    $('#musiciansIndexPage #profileForm #saveProfile').toggleClass('hidden');
+    $('#musiciansIndexPage #profileForm #deleteProfile').toggleClass('hidden');
+    htmlPopulateProfileForm(musician);
+  });
+}
 
-//********Profile create, update or delete******//
+function clickDeleteProfile(e){
+  //put in an 'are you sure?' button alert here then call the subsequent code if yes is clicked.
+  var user = $('#musiciansIndexPage #profileForm #updateProfile p').text();
+  var url = '/musicians/' + user;
+  user = {'user': user};
+  var data = $.param(user);
+  console.log(user);
+  sendAjaxRequest(url, data, 'post', 'delete', e, function(musician, status, jqXHR){
+    htmlUpdateMusicians(musician);
+    $('#successNotifier #successDelete').removeClass('hidden');
+    $('#successNotifier #ViewMyProfileLink').addClass('hidden');
+  });
+  e.preventDefault();
+}
+//********Profile create, update or delete form button click handlers******//
 
 function clickProfileSubheader(){
   var $subheader = $(this);
@@ -132,13 +163,9 @@ function clickAddInstrument(){
 function submitSaveProfile(e){
   $('#musiciansIndexPage #profileForm').toggleClass('hidden');
   console.log('submitSaveProfile is being called');
-  debugger;
-  var name;
-  if($('#location').val()){
-    name = $('#location').val();
-  }else{
-    name = 'Nashville';//sets a default location to allow the asynch functions below to progress.
-  }
+  var name = $('#location').val();
+  if(!name){ name = 'Rothera Research Station, Antarctica'; }//sets a default location to allow the asynch functions below to progress.
+
   var geocoder = new google.maps.Geocoder();
   var form = this;
   var age = $('#ageSelectBox').val();
@@ -176,28 +203,11 @@ function clickCancelProfileSubmit(e){
   e.preventDefault();
 }
 
-function clickEditMusicianProfile(){
-  $('#musiciansIndexPage #musicians').toggleClass('hidden');
-  var email = $('#authentication-button').text();
-  var data = {'email': email};
-  sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
-    console.log(musician.user);
-    //the next line was added back in from a previous version:
-    var $id = $('<p class="hidden">' + musician.user + '</p>');
-    $('#musiciansIndexPage #profileForm').toggleClass('hidden');
-    //so was the next line:
-    $('#musiciansIndexPage #profileForm #updateProfile').append($id);
-    $('#musiciansIndexPage #profileForm #updateProfile').toggleClass('hidden');
-    $('#musiciansIndexPage #profileForm #saveProfile').toggleClass('hidden');
-    $('#musiciansIndexPage #profileForm #deleteProfile').toggleClass('hidden');
-    htmlPopulateProfileForm(musician);
-  });
-}
-
 function clickUpdateProfile(e){
   var place = $('#location').val();
+  if(!place) { place = 'Rothera Research Station, Antarctica'; }
   var geocoder = new google.maps.Geocoder();
-//can probably refactor this geocode part out of here and have it just return the locdata object.
+  //can probably refactor this geocode part out of here and have it just return the locdata object.
   geocoder.geocode({address: place}, function(results, status){
     var location = {};
     location.name = results[0].formattedAddress;
@@ -233,6 +243,7 @@ function clickUpdateProfile(e){
         console.log('*******************this is after the ajax call************');
         console.log(musician);
         htmlUpdateMusicians(musician);
+        $('#successNotifier #successUpdate').removeClass('hidden');
       });
     });
   });
@@ -241,7 +252,7 @@ function clickUpdateProfile(e){
 
 
 
-//*******musician search functions**********//
+//-------------musician search functions------------------//
 
 function clickSearchMusician(){
   $('#musicians').addClass('hidden');
