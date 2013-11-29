@@ -5,7 +5,7 @@ var Musician = mongoose.Schema({
   name                    : String,
   createdAt               : {type: Date, default: Date.now},
 
-  location                : String,
+  location                : { type: String, required: [true, 'Location is required']},
   locname                 : String,
   latitude                : Number,
   longitude               : Number,

@@ -164,35 +164,36 @@ function submitSaveProfile(e){
   $('#musiciansIndexPage #profileForm').toggleClass('hidden');
   console.log('submitSaveProfile is being called');
   var name = $('#location').val();
-  if(!name){ name = 'Rothera Research Station, Antarctica'; }//sets a default location to allow the asynch functions below to progress.
+  if(!name){alert('Please enter your location');
+  }else{
+    var geocoder = new google.maps.Geocoder();
+    var form = this;
+    var age = $('#ageSelectBox').val();
+    var ageGroup = {'ageGroup': age};
+    geocoder.geocode({address: name}, function(results, status){
+      var location = {};
+      location.name = results[0].formattedAddress;
+      location.coordinates = results[0].geometry.location;
 
-  var geocoder = new google.maps.Geocoder();
-  var form = this;
-  var age = $('#ageSelectBox').val();
-  var ageGroup = {'ageGroup': age};
-  geocoder.geocode({address: name}, function(results, status){
-    var location = {};
-    location.name = results[0].formattedAddress;
-    location.coordinates = results[0].geometry.location;
+      var locdata = {
+        locname : location.name,
+        latitude  : location.coordinates.lat(),
+        longitude  : location.coordinates.lng()
+      };
 
-    var locdata = {
-      locname : location.name,
-      latitude  : location.coordinates.lat(),
-      longitude  : location.coordinates.lng()
-    };
-
-    var ageSerialized = $.param(ageGroup);
-    var formSerialized = $(form).serialize();
-    var locSerialized = $.param(locdata);
-    var data = ageSerialized + '&' + locSerialized + '&' + formSerialized;
-    // console.log('---------------------------------before ajax----------------------------');
-    // console.log(data);
-    sendAjaxRequest('/musicians', data, 'post', null, null, function(musician, status, jqXHR){
-      // console.log('---------------------------------after ajax----------------------------');
-      // console.log(musician);
-      htmlUpdateMusicians(musician);
+      var ageSerialized = $.param(ageGroup);
+      var formSerialized = $(form).serialize();
+      var locSerialized = $.param(locdata);
+      var data = ageSerialized + '&' + locSerialized + '&' + formSerialized;
+      // console.log('---------------------------------before ajax----------------------------');
+      // console.log(data);
+      sendAjaxRequest('/musicians', data, 'post', null, null, function(musician, status, jqXHR){
+        // console.log('---------------------------------after ajax----------------------------');
+        // console.log(musician);
+        htmlUpdateMusicians(musician);
+      });
     });
-  });
+  }
   e.preventDefault();
 }
 
