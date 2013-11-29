@@ -160,8 +160,9 @@ function clickDeleteProfile(e){
 
 function clickProfileSubheader(){
   var $subheader = $(this);
-  $subheader.next().toggleClass('hidden');
-  //if there's time, make all others revert to hidden when each is opened?
+  $('.form').removeClass('hidden');
+  $('.form').addClass('hidden');
+  $subheader.next().removeClass('hidden');
 }
 
 function clickAddGenre(){
