@@ -206,48 +206,51 @@ function clickCancelProfileSubmit(e){
 
 function clickUpdateProfile(e){
   var place = $('#location').val();
-  if(!place) { place = 'Rothera Research Station, Antarctica'; }
-  var geocoder = new google.maps.Geocoder();
-  //can probably refactor this geocode part out of here and have it just return the locdata object.
-  geocoder.geocode({address: place}, function(results, status){
-    var location = {};
-    location.name = results[0].formattedAddress;
-    location.coordinates = results[0].geometry.location;
+  if(!place){
+    alert('Please enter your location');
+  }else{
+    var geocoder = new google.maps.Geocoder();
+    //can probably refactor this geocode part out of here and have it just return the locdata object.
+    geocoder.geocode({address: place}, function(results, status){
+      var location = {};
+      location.name = results[0].formattedAddress;
+      location.coordinates = results[0].geometry.location;
 
-    var locdata = {
-      locname : location.name,
-      latitude  : location.coordinates.lat(),
-      longitude  : location.coordinates.lng()
-    };
-    var locSerialized = $.param(locdata);
-    //inserted from here to fix update glitch:
-    var email = $('#authentication-button').text();
-    var data = {'email': email};
-    sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
-      console.log('--------------------this is the userId from the ajax call----------');
-      console.log(musician.user);
+      var locdata = {
+        locname : location.name,
+        latitude  : location.coordinates.lat(),
+        longitude  : location.coordinates.lng()
+      };
+      var locSerialized = $.param(locdata);
+      //inserted from here to fix update glitch:
+      var email = $('#authentication-button').text();
+      var data = {'email': email};
+      sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
+        console.log('--------------------this is the userId from the ajax call----------');
+        console.log(musician.user);
 
-      var id = musician.user;
-      var form = $('#musiciansIndexPage #profileForm');
-      var age = $('#ageSelectBox').val();
+        var id = musician.user;
+        var form = $('#musiciansIndexPage #profileForm');
+        var age = $('#ageSelectBox').val();
 
-      var ageGroup = {'ageGroup': age};
-      var userId = {'user': id};
+        var ageGroup = {'ageGroup': age};
+        var userId = {'user': id};
 
-      var ageSerialized = $.param(ageGroup);
-      var userSerialized = $.param(userId);
-      var formSerialized = $(form).serialize();
+        var ageSerialized = $.param(ageGroup);
+        var userSerialized = $.param(userId);
+        var formSerialized = $(form).serialize();
 
-      var data = userSerialized + '&' + ageSerialized + '&' + formSerialized + '&' + locSerialized;
-      var url = '/musicians/' + id;
-      sendAjaxRequest(url, data, 'post', 'put', e, function(musician, status, jqXHR){
-        console.log('*******************this is after the ajax call************');
-        console.log(musician);
-        htmlUpdateMusicians(musician);
-        $('#successNotifier #successUpdate').removeClass('hidden');
+        var data = userSerialized + '&' + ageSerialized + '&' + formSerialized + '&' + locSerialized;
+        var url = '/musicians/' + id;
+        sendAjaxRequest(url, data, 'post', 'put', e, function(musician, status, jqXHR){
+          console.log('*******************this is after the ajax call************');
+          console.log(musician);
+          htmlUpdateMusicians(musician);
+          $('#successNotifier #successUpdate').removeClass('hidden');
+        });
       });
     });
-  });
+  }
   e.preventDefault();
 }
 
