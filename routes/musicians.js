@@ -77,7 +77,6 @@ exports.searchResults = function(req, res){
 /*
  * GET '/musiciansGetId'
  */
-
 exports.getId = function(req, res){
   Musician.find(req.query, function(err, musicians){
     res.send(musicians[0].user);
@@ -89,16 +88,15 @@ exports.getId = function(req, res){
  * PUT '/musicians/:id'
  */
 exports.update = function(req, res){
-  var query = {'name': req.body.name};
+  var query = {'user': req.body.user};
   var options = {new: true};
-  console.log(req.body);
   Musician.findOneAndUpdate(query, { $set: {
-    name                  : req.body.name,
+    name : req.body.name,
+    latitude : req.body.latitude,
+    longitude : req.body.longitude,
+    instrumentsTaught : req.body.instrumentsTaught,
     location              : req.body.location,
-    latitude              : req.body.latitude,
-    longitude             : req.body.longitude,
     instruments           : req.body.instruments,
-    instrumentsTaught     : req.body.instrumentsTaught,
     instrumentsOwned      : req.body.instrumentsOwned,
     equipmentAccess       : req.body.equipmentAccess,
     hasPracticeSpace      : req.body.hasPracticeSpace,
@@ -127,9 +125,13 @@ exports.update = function(req, res){
     twitterLink           : req.body.twitterLink,
     linkedInLink          : req.body.linkedInLink
   }}, options, function(err, musician) {
+    if(err){
+      console.log(err);
+    }
     res.send(musician);
   });
 };
+
 
 /*
  * DELETE '/musicians/:id'
@@ -137,7 +139,6 @@ exports.update = function(req, res){
 exports.delete = function(req, res){
 
 };
-
 
 
 /*

@@ -58,6 +58,7 @@ exports.index = function(req, res){
     Musician.find({'user':id}, function(err, musicians){
       Genre.find(function(err, genres){
         Instrument.find(function(err, instruments){
+          console.log(musicians[0]);
           res.send(musicians[0]);
         });
       });

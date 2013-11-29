@@ -15,7 +15,8 @@ function initialize(){
   $('#musiciansIndexPage .musician a').on('click', clickMusicianLink);
   $('#musiciansIndexPage #createProfileButton').on('click', clickCreateMusicianProfile);
   $('#musiciansIndexPage #profileForm h5').on('click', clickProfileSubheader);
-  $('#musiciansIndexPage #profileForm').on('submit', clickSaveProfile);
+  $('#musiciansIndexPage #profileForm').on('submit', submitSaveProfile);
+
   $('#musiciansIndexPage #profileForm #addGenreButton').on('click', clickAddGenre);
   $('#musiciansIndexPage #profileForm #addInstrumentButton').on('click', clickAddInstrument);
   $('#musiciansIndexPage #profileForm #cancelProfile').on('click', clickCancelProfileSubmit);
@@ -72,7 +73,6 @@ function clickLogin(e){
 
 function clickAuthenticationButton(e){
   var isAnonymous = $('#authentication-button[data-email="anonymous"]').length === 1;
-
   if(isAnonymous){
     $('form#authentication').toggleClass('hidden');
     $('input[name="email"]').focus();
@@ -90,9 +90,19 @@ function clickAuthenticationButton(e){
 function clickCreateMusicianProfile(){
   $('#musiciansIndexPage #profileForm').removeClass('hidden');
   $('#musiciansIndexPage #musicians').toggleClass('hidden');
+  if($('#musiciansIndexPage #profileForm #saveProfile').hasClass('hidden')){
+    $('#musiciansIndexPage #profileForm #saveProfile').removeClass('hidden');
+  }
+  if(!$('#musiciansIndexPage #profileForm #updateProfile').hasClass('hidden')){
+    $('#musiciansIndexPage #profileForm #updateProfile').addClass('hidden');
+  }
+  if(!$('#musiciansIndexPage #profileForm #deleteProfile').hasClass('hidden')){
+    $('#musiciansIndexPage #profileForm #deleteProfile').addClass('hidden');
+  }
+  if($('#musiciansIndexPage #profileForm #cancelProfile').hasClass('hidden')){
+    $('#musiciansIndexPage #profileForm #cancelProfile').removeClass('hidden');
+  }
 }
-
-
 
 
 //********Profile create, update or delete******//
@@ -100,6 +110,7 @@ function clickCreateMusicianProfile(){
 function clickProfileSubheader(){
   var $subheader = $(this);
   $subheader.next().toggleClass('hidden');
+  //if there's time, make all others revert to hidden when each is opened?
 }
 
 function clickAddGenre(){
@@ -118,8 +129,16 @@ function clickAddInstrument(){
   });
 }
 
-function clickSaveProfile(e){
-  var name = $('#location').val();
+function submitSaveProfile(e){
+  $('#musiciansIndexPage #profileForm').toggleClass('hidden');
+  console.log('submitSaveProfile is being called');
+  debugger;
+  var name;
+  if($('#location').val()){
+    name = $('#location').val();
+  }else{
+    name = 'Nashville';//sets a default location to allow the asynch functions below to progress.
+  }
   var geocoder = new google.maps.Geocoder();
   var form = this;
   var age = $('#ageSelectBox').val();
@@ -139,7 +158,11 @@ function clickSaveProfile(e){
     var formSerialized = $(form).serialize();
     var locSerialized = $.param(locdata);
     var data = ageSerialized + '&' + locSerialized + '&' + formSerialized;
+    // console.log('---------------------------------before ajax----------------------------');
+    // console.log(data);
     sendAjaxRequest('/musicians', data, 'post', null, null, function(musician, status, jqXHR){
+      // console.log('---------------------------------after ajax----------------------------');
+      // console.log(musician);
       htmlUpdateMusicians(musician);
     });
   });
@@ -158,8 +181,12 @@ function clickEditMusicianProfile(){
   var email = $('#authentication-button').text();
   var data = {'email': email};
   sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
-    console.log(musician.name);
+    console.log(musician.user);
+    //the next line was added back in from a previous version:
+    var $id = $('<p class="hidden">' + musician.user + '</p>');
     $('#musiciansIndexPage #profileForm').toggleClass('hidden');
+    //so was the next line:
+    $('#musiciansIndexPage #profileForm #updateProfile').append($id);
     $('#musiciansIndexPage #profileForm #updateProfile').toggleClass('hidden');
     $('#musiciansIndexPage #profileForm #saveProfile').toggleClass('hidden');
     $('#musiciansIndexPage #profileForm #deleteProfile').toggleClass('hidden');
@@ -170,7 +197,7 @@ function clickEditMusicianProfile(){
 function clickUpdateProfile(e){
   var place = $('#location').val();
   var geocoder = new google.maps.Geocoder();
-
+//can probably refactor this geocode part out of here and have it just return the locdata object.
   geocoder.geocode({address: place}, function(results, status){
     var location = {};
     location.name = results[0].formattedAddress;
@@ -182,20 +209,29 @@ function clickUpdateProfile(e){
       longitude  : location.coordinates.lng()
     };
     var locSerialized = $.param(locdata);
-    var name = $('#musiciansIndexPage #profileForm #name').val();
-    name = {'name': name};
-    var url = '/musiciansGetId';
-    sendAjaxRequest(url, name, 'get', null, e, function(id, status, jqXHR){
+    //inserted from here to fix update glitch:
+    var email = $('#authentication-button').text();
+    var data = {'email': email};
+    sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
+      console.log('--------------------this is the userId from the ajax call----------');
+      console.log(musician.user);
+
+      var id = musician.user;
       var form = $('#musiciansIndexPage #profileForm');
       var age = $('#ageSelectBox').val();
+
       var ageGroup = {'ageGroup': age};
+      var userId = {'user': id};
 
       var ageSerialized = $.param(ageGroup);
+      var userSerialized = $.param(userId);
       var formSerialized = $(form).serialize();
 
-      var data = ageSerialized + '&' + formSerialized + '&' + locSerialized;
+      var data = userSerialized + '&' + ageSerialized + '&' + formSerialized + '&' + locSerialized;
       var url = '/musicians/' + id;
       sendAjaxRequest(url, data, 'post', 'put', e, function(musician, status, jqXHR){
+        console.log('*******************this is after the ajax call************');
+        console.log(musician);
         htmlUpdateMusicians(musician);
       });
     });
