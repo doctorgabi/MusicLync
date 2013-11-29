@@ -27,9 +27,11 @@ require('./config').initialize(app, RedisStore);
 // routes
 app.get('/', home.index);
 app.post('/users', users.create);
+app.get('/userSearch', users.search);
 app.get('/users', users.index);
 app.put('/login', users.login);
 app.delete('/logout', users.logout);
+
 app.get('/musicians', musicians.index);
 app.get('/musicians/search', musicians.searchResults);
 app.post('/musicians', musicians.create);
@@ -39,6 +41,7 @@ app.delete('/musicians/:id', musicians.delete);
 app.get('/musiciansGetId', musicians.getId);
 app.get('/mapDataRequest', musicians.mapAll);
 app.get('/mapDataRequest/:id', musicians.map);
+
 app.post('/genres', genres.create);
 app.post('/instruments', instruments.create);
 // app.get('/bands', bands.index);

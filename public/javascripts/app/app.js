@@ -1,4 +1,4 @@
-/* global document, sendAjaxRequest, sendHtmlAjaxRequest, window */
+/* global document, sendAjaxRequest, sendHtmlAjaxRequest, alert, window */
 //io was up there too; don't plan to use sockets.
 
 $(document).ready(initialize);
@@ -30,6 +30,7 @@ function initialize(){
   $('#musiciansIndexPage #startSearchMusician').on('click', clickStartSearchMusician);
   $('#musiciansIndexPage #musicianReturnLocationSearch').on('click', clickMusicianReturnLocationSearch);
   initMap(lat, lng, 13);
+  // checkUserStatus();
 }
 
 // function initializeSocketIO(){
@@ -50,6 +51,25 @@ function initMap(lat, lng, zoom){
   var latLng = new google.maps.LatLng(lat, lng);
   new google.maps.Marker({map: map, position: latLng});
 }
+
+// function checkUserStatus(){
+var user = {'email': $('#authentication-button').text()};
+sendAjaxRequest('/userSearch', user, 'get', null, null, function(user, status, jqXHR){
+  if(user.length > 0){
+    var data = {'email': $('#authentication-button').text()};
+    sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
+      if(musician){
+        htmlUserHasProfile();
+      }else{
+        htmlUserWithoutProfile();
+      }
+    });
+  }else{
+    htmlNoUser();
+  }
+});
+//}
+
 
 //-------------------------------------------------------------------//
 //-------------------------Click Handlers----------------------------//
@@ -360,6 +380,20 @@ function htmlLogout(data){
   window.location.href='/';
 }
 
+function htmlNoUser(){
+  $('#musiciansIndexPage #createProfileButton').addClass('hidden');
+  $('#musiciansIndexPage #editProfileButton').addClass('hidden');
+}
+
+function htmlUserWithoutProfile(){
+  $('#musiciansIndexPage #createProfileButton').removeClass('hidden');
+  $('#musiciansIndexPage #editProfileButton').addClass('hidden');
+}
+
+function htmlUserHasProfile(){
+  $('#musiciansIndexPage #createProfileButton').addClass('hidden');
+  $('#musiciansIndexPage #editProfileButton').removeClass('hidden');
+}
 
 //-------------------------------------------------------------------//
 //------------------All Musicians Page HTML changes------------------//

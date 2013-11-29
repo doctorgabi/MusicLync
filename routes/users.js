@@ -49,6 +49,21 @@ exports.logout = function(req, res){
     res.send({status: 'ok'});
   });
 };
+
+
+
+/*
+ * GET '/userSearch'
+ */
+exports.search = function(req, res){
+  User.find(req.query, function(err, user){
+    res.send(user);
+  });
+};
+
+
+
+
 /*
  * GET '/users'
  */
