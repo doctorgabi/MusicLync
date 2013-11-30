@@ -21,6 +21,17 @@ body{
 .hidden{
   display: none;
 }
+footer{
+  p{
+    color: @baseText;
+  }
+  ul > li > a{
+    color: @baseText;
+    &:hover{
+      color: white;
+    }
+  }
+}
 .contain-to-grid, nav.top-bar{
   .nav{
     color: @baseText;
@@ -209,7 +220,7 @@ body{
       position: relative;
       top: 10px;
     }
-    #saveProfile, #updateProfile, #cancelProfile, #addGenreButton, #addInstrumentButton, #startSearchMusician, #cancelSearchMusician, #searchMusicianByAttributes, #searchMusicianByLocation, #cancelSearchMusician, #musicianReturnLocationSearch, #cancelSearchByAttributesMusician{
+    #saveProfile, #updateProfile, #cancelProfile, #addGenreButton, #addInstrumentButton, #startSearchMusician, #cancelSearchMusician, #searchMusicianByAttributes, #searchMusicianByLocation, #cancelSearchMusician, #musicianReturnLocationSearch, #cancelSearchByAttributesMusician, #addInstrumentOwnedButton{
       background-color: @baseButton;
       border: none;
       color: black;
@@ -223,6 +234,9 @@ body{
     #addGenreButton, #addInstrumentButton{
       position: relative;
       top: 16px;
+    }
+    #formInstrumentPTag{
+      margin-bottom: 0;
     }
   }
   #searchForm, #searchAttributesForm{

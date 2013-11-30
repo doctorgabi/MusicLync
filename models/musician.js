@@ -11,7 +11,7 @@ var Musician = mongoose.Schema({
   longitude               : Number,
   instruments             : [{type: mongoose.Schema.Types.ObjectId, ref: 'Instrument'}],
   instrumentsTaught       : [String],
-  instrumentsOwned        : [String],
+  instrumentsOwned        : [{type: mongoose.Schema.Types.ObjectId, ref: 'Instrument'}],
   equipmentAccess         : [String],
   hasPracticeSpace        : {type: Boolean, default: false},
   skills                  : [String],

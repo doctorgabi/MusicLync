@@ -35,6 +35,7 @@ exports.create = function(req, res){
   var musician = new Musician(req.body);
   musician.user = res.locals.user;
   musician.save(function(err, musician){
+    console.log(err);
     res.send(musician);
   });
 };
@@ -137,13 +138,9 @@ exports.update = function(req, res){
  * DELETE '/musicians/:id'
  */
 exports.delete = function(req, res){
-  console.log('body.user = ');
-  console.log(req.body.user);
   var user = req.body.user;
   var query = {'user': user};
   Musician.findOneAndRemove(query, function(err, musician){
-    console.log('------------------------------this is inside the findOneAndRemove callback------------------------------');
-    console.log(musician);
     res.send(musician);
   });
 };
