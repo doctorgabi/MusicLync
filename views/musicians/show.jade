@@ -7,46 +7,55 @@ block content
     var lng = #{musician.longitude};
 
   #musiciansShowPage
-    .row
-      .small-2.columns
-        img(src=musician.photoUrl)
-      .small-4.columns
-        #musicianProfile
-          h5=musician.name
-          p=musician.location
-          p= "Instruments: "
-            each instrument in musician.instruments
-              span= instrument.name + "  "
-          p= "Genres: "
-            each genre in musician.genres
-              span= genre.name + "  "
-          p(class=musician.influences[0] ? '' : 'hidden') Influences: #{musician.influences}
-          //- p Email: #{musician.user.email}
-          //- p Website: #{musician.website}
-          //- p Forthcoming gigs: #{musician.gigDates}
-          //- p Venues: #{musician.gigVenues}
-          //- p Google+: #{musician.googlePlusLink}
-          //- p Facebook: #{musician.facebookLink}
-          //- p Twitter: #{musician.twitterLink}
-          //- p LinkedIn: #{musician.linkedInLink}
-          //- p Bio: #{musician.bio}
-          //- p Instruments taught: #{musician.instrumentsTaught}
-          //- p Instruments owned: #{musician.instrumentsOwned}
-          //- p Equipment access: #{musician.equipmentAccess}
-          //- p Practice space available: #{musician.hasPracticeSpace}
-          //- p Other skills: #{musician.skills}
-          //- p Equipment transport available: #{musician.hasEquipmentTransport}
-          //- p Time available per week: #{musician.availableTime}
-          p Age group: #{musician.ageGroup}
-          //- p Wants to practice: #{musician.wantsToPractice}
-          //- p Wants to perform: #{musician.wantsToPerform}
-          //- p Looking for a teacher: #{musician.wantsTeacher}
-          //- p Hourly gig fee: #{musician.feePerHourGig}
-          //- p Hourly equipment rental fee: #{musician.feePerHourEquipment}
-          //- p Hourly teaching fee: #{musician.feePerHourTeach}
-          //- p Bio: #{musician.}
-          //- p Bio: #{musician.}
-          //-embed video & audio
-      .small-6.columns
-        #map-canvas
+    #musicianProfile
+      .row
+        .small-12.columns.noBorders
+          .small-6.columns.noBorders
+            .small-7.columns
+              img(src=musician.photoUrl)
+            .small-5.columns
+              h4=musician.name
+              p=musician.location
+              a(href=musician.website) #{musician.website}
+              #socialMedia
+                a(href=musician.twitterLink, alt="twitter"): img(src="/images/twitter1.png" class="socialMediaIcons")
+                a(href=musician.googlePlusLink, alt="google plus"): img(src="/images/g+32.png" class="socialMediaIcons")
+                a(href=musician.facebookLink, alt="facebook"): img(src="/images/facebook.png" class="socialMediaIcons")
+                a(href=musician.linkedInLink, alt="linked in"): img(src="/images/linkedin.png" class="socialMediaIcons")
+              p= "Instruments: "
+                each instrument in musician.instruments
+                  span= instrument.name + "  "
+          .small-6.columns.noBorders
+            #map-canvas.noBorders
+
+
+
+      //-     p= "Genres: "
+      //-       each genre in musician.genres
+      //-         span= genre.name + "  "
+      //-     p(class=musician.influences[0] ? '' : 'hidden') Influences: #{musician.influences}
+      //-     p Email: #{musician.user.email}
+      //-
+      //-     p Forthcoming gigs: #{musician.gigDates}
+      //-     p Venues: #{musician.gigVenues}
+
+      //-     p Bio: #{musician.bio}
+      //-     p Instruments taught: #{musician.instrumentsTaught}
+      //-     p Instruments owned: #{musician.instrumentsOwned}
+      //-     p Equipment access: #{musician.equipmentAccess}
+      //-     p Practice space available: #{musician.hasPracticeSpace}
+      //-     p Other skills: #{musician.skills}
+      //-     p Equipment transport available: #{musician.hasEquipmentTransport}
+      //-     p Time available per week: #{musician.availableTime}
+      //-     p Age group: #{musician.ageGroup}
+      //-     p Wants to practice: #{musician.wantsToPractice}
+      //-     p Wants to perform: #{musician.wantsToPerform}
+      //-     p Looking for a teacher: #{musician.wantsTeacher}
+      //-     p Hourly gig fee: #{musician.feePerHourGig}
+      //-     p Hourly equipment rental fee: #{musician.feePerHourEquipment}
+      //-     p Hourly teaching fee: #{musician.feePerHourTeach}
+      //-     p Bio: #{musician.bio}
+      //-     //-embed video & audio
+      //- .small-6.columns
+      //-
 

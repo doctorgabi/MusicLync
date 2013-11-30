@@ -3,6 +3,7 @@
 @baseText: rgb(145, 119, 76);
 @baseBackground: rgb(65, 59, 46);
 @baseButton: rgb(91, 69, 45);
+@baseDarkGradient: rgba(48, 48, 48,1);
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,900italic,900,700italic);
 @import url(http://fonts.googleapis.com/css?family=Sonsie+One);
 //-----------------------General styling-----------------------------//
@@ -15,8 +16,9 @@ body{
   background-color:#282828;
   background-size:16px 16px;
 }
-#spacer{
-  height: 46px;
+.noBorders{
+  padding: 0;
+  margin: 0;
 }
 .float{
   float: left;
@@ -25,11 +27,8 @@ body{
   display: none;
 }
 footer{
-  #aboutModal{
-    background-color: red;
-    color: blue;
-  }
   p{
+    font-family: 'Roboto', Arial, sans-serif; font-weight: 300;
     color: @baseText;
   }
   ul > li > a{
@@ -79,12 +78,12 @@ footer{
     border: none;
     border-radius: 5px;
     background: rgba(239,197,202,1);
-    background: -moz-linear-gradient(top, @baseBackground 0%, rgba(38, 38, 38,1) 31%, rgba(38, 38, 38,1) 70%, @baseBackground 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, @baseBackground), color-stop(31%, rgba(38, 38, 38,1)), color-stop(70%, rgba(38, 38, 38,1)), color-stop(100%, @baseBackground));
-    background: -webkit-linear-gradient(top, @baseBackground 0%, rgba(38, 38, 38,1) 31%, rgba(38, 38, 38,1) 70%, @baseBackground 100%);
-    background: -o-linear-gradient(top, @baseBackground 0%, rgba(38, 38, 38,1) 31%, rgba(38, 38, 38,1) 70%, @baseBackground 100%);
-    background: -ms-linear-gradient(top, @baseBackground 0%, rgba(38, 38, 38,1) 31%, rgba(38, 38, 38,1) 70%, @baseBackground 100%);
-    background: linear-gradient(to bottom, @baseBackground 0%, rgba(38, 38, 38,1) 31%, rgba(38, 38, 38,1) 70%, @baseBackground 100%);
+    background: -moz-linear-gradient(top, @baseBackground 0%, @baseDarkGradient 31%, @baseDarkGradient 70%, @baseBackground 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, @baseBackground), color-stop(31%, @baseDarkGradient), color-stop(70%, @baseDarkGradient), color-stop(100%, @baseBackground));
+    background: -webkit-linear-gradient(top, @baseBackground 0%, @baseDarkGradient 31%, @baseDarkGradient 70%, @baseBackground 100%);
+    background: -o-linear-gradient(top, @baseBackground 0%, @baseDarkGradient 31%, @baseDarkGradient 70%, @baseBackground 100%);
+    background: -ms-linear-gradient(top, @baseBackground 0%, @baseDarkGradient 31%, @baseDarkGradient 70%, @baseBackground 100%);
+    background: linear-gradient(to bottom, @baseBackground 0%, @baseDarkGradient 31%, @baseDarkGradient 70%, @baseBackground 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#262626', endColorstr=@baseBackground, GradientType=0 );
     -moz-box-shadow: -7px 6px 8px #000000;
     -webkit-box-shadow: -7px 6px 8px #000000;
@@ -335,24 +334,46 @@ footer{
 //****************Musicians show page*****************//
 #musiciansShowPage{
   #musicianProfile{
-    h5{
+    h4{
       font-family: 'Roboto', Arial, sans-serif; font-weight: 500;
       color: @baseText;
     }
-    p{
+    p, a{
       font-family: 'Roboto', Arial, sans-serif; font-weight: 300;
       color: @baseText;
+      margin-bottom: 0.3rem;
+    }
+    a{
+      &:hover{
+        color: white;
+      }
+    }
+    // img{
+    //   position: relative;
+    //   right: 30px;
+    // }
+    #socialMedia{
+      // position: relative;
+      // left: 20px;
+      margin-top: 8px;
     }
   }
   #map-canvas{
+    position: relative;
+    left: 80px;
     width: 400px;
     height: 400px;
     border: 8px solid @baseText;
     border-radius: 15px;
-    margin-top: 25px;
+    margin-top: 5px;
     margin-bottom: 25px;
     -moz-box-shadow: -7px 6px 8px #000000;
     -webkit-box-shadow: -7px 6px 8px #000000;
     box-shadow:  -7px 6px 8px #000000;
+  }
+  .socialMediaIcons{
+    height: 30px;
+    width: 30px;
+    margin: 0 2px;
   }
 }
