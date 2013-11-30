@@ -7,44 +7,50 @@ block content
     var lng = #{musician.longitude};
 
   #musiciansShowPage
-    #musicianProfile
       .row
-        .small-12.columns.noBorders
-          .small-6.columns.noBorders
-            .small-7.columns
-              img(src=musician.photoUrl)
-            .small-5.columns
-              h4=musician.name
-              p=musician.location
-              a(href=musician.website) #{musician.website}
-              #socialMedia
-                a(href=musician.twitterLink, alt="twitter"): img(src="/images/twitter1.png" class="socialMediaIcons")
-                a(href=musician.googlePlusLink, alt="google plus"): img(src="/images/g+32.png" class="socialMediaIcons")
-                a(href=musician.facebookLink, alt="facebook"): img(src="/images/facebook.png" class="socialMediaIcons")
-                a(href=musician.linkedInLink, alt="linked in"): img(src="/images/linkedin.png" class="socialMediaIcons")
-              p= "Instruments: "
-                each instrument in musician.instruments
+        .small-12.columns.noBorders.musicianProfile
+          .small-7.columns.noBorders
+            .row
+              .small-7.columns
+                img(src=musician.photoUrl id="musicianPhoto")
+              .small-5.columns
+                h4=musician.name
+                p=musician.location
+                a(href=musician.website) #{musician.website}
+                #socialMedia
+                  a(href=musician.twitterLink, alt="twitter"): img(src="/images/twitter1.png" class="socialMediaIcons")
+                  a(href=musician.googlePlusLink, alt="google plus"): img(src="/images/g+32.png" class="socialMediaIcons")
+                  a(href=musician.facebookLink, alt="facebook"): img(src="/images/facebook.png" class="socialMediaIcons")
+                  a(href=musician.linkedInLink, alt="linked in"): img(src="/images/linkedin.png" class="socialMediaIcons")
+                p <strong>Instruments:</strong>
+                 each instrument in musician.instruments
                   span= instrument.name + "  "
-          .small-6.columns.noBorders
+                p <strong>Other skills:</strong> #{musician.skills}
+                p <strong>Genres:</strong>
+                 each genre in musician.genres
+                  span= genre.name + "  "
+
+            .row
+              .small-12.columns
+
+          .small-5.columns.noBorders
             #map-canvas.noBorders
+        .small-12.columns.noBorders.musicianProfile
+          p <strong>Bio:</strong> #{musician.bio}
 
 
 
-      //-     p= "Genres: "
-      //-       each genre in musician.genres
-      //-         span= genre.name + "  "
       //-     p(class=musician.influences[0] ? '' : 'hidden') Influences: #{musician.influences}
       //-     p Email: #{musician.user.email}
       //-
       //-     p Forthcoming gigs: #{musician.gigDates}
       //-     p Venues: #{musician.gigVenues}
 
-      //-     p Bio: #{musician.bio}
+
       //-     p Instruments taught: #{musician.instrumentsTaught}
       //-     p Instruments owned: #{musician.instrumentsOwned}
       //-     p Equipment access: #{musician.equipmentAccess}
       //-     p Practice space available: #{musician.hasPracticeSpace}
-      //-     p Other skills: #{musician.skills}
       //-     p Equipment transport available: #{musician.hasEquipmentTransport}
       //-     p Time available per week: #{musician.availableTime}
       //-     p Age group: #{musician.ageGroup}
