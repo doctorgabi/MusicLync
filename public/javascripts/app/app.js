@@ -29,10 +29,14 @@ function initialize(){
   $('#musiciansIndexPage #searchMusicianByAttributes').on('click', clickSearchMusicianByAttributes);
   $('#musiciansIndexPage #startSearchMusician').on('click', clickStartSearchMusician);
   $('#musiciansIndexPage #musicianReturnLocationSearch').on('click', clickMusicianReturnLocationSearch);
+  //$('#about').on('click', clickAbout);
   initMap(lat, lng, 13);
   // checkUserStatus();
 }
-
+// function clickAbout(e){
+//   e.preventDefault();
+//   $('#aboutModal').reveal();
+// }
 // function initializeSocketIO(){
 //   var port = window.location.port ? window.location.port : '80';
 //   var url = window.location.protocol + '//' + window.location.hostname + ':' + port + '/app';

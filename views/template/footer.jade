@@ -6,7 +6,7 @@ footer(class="row")
       p(class='left') © Copyright Gabrielle Epstein 2013.
       ul(class="inline-list right")
         li: a(href='mailto:doctorgabi@gmail.com') Contact
-        li: a(href='#' data-reveal-id="aboutModal") About
+        li: a(href='#' data-reveal-id="aboutModal" id="about") About
         li: a(href='https://github.com/doctorgabi/MusicLync') GitHub
         li: a(href='/musicians') Musicians
         li: a(href='#') Bands
@@ -14,7 +14,13 @@ footer(class="row")
         li: a(href='#') Managers
         li: a(href='#') Industry
 div(id="aboutModal" class="reveal-modal" data-reveal)
-  h2 Awesome. I have it.
-  p(class="lead") Your couch.  It is mine.
-  p Im a cool paragraph that lives inside of an even cooler modal. Wins
-  a(class="close-reveal-modal") Close
+  h2 MusicLync
+  p This is a student project.
+  p Nashville Software School is a 6 month software developer bootcamp for people with no previous experience coding.
+  p The first three months focuses on the front-end and months 4 - 6 focus on back-end development.
+  p During the final two weeks of the front-end part of the course each student must design and build their own web app to showcase some of the skills they have learned.
+  p This is my web app; it's called MusicLync and is designed to bring musicians together. The idea is that the more people practice with different musicians, the better they become.
+  p The minimum viable product is supposed to allow musicians to create their own profile and to find other musicians based on searchable attributes, such as what instruments are played, the musician's location, age group, etc. Musicians may post links to their own material and social media and may write reviews. They can add whether they teach and what their fees are for teaching, gigs or hiring their equipment.
+  p The wider scope of the app would add in Bands, Venues, Managers and Industry. Each will be able to log in and create their own profiles and search for any of the other categories.
+  p This project uses redis, jade, less, javascript, jQuery, express, foundation 5, lodash, grunt, ajax, mongoose, mongoDB, node and hosting with amazonaws and dreamhost. Obviously, version control is maintained with GitHub.
+  a(href="#" class="close-reveal-modal") Close
