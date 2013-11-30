@@ -6,10 +6,15 @@ footer(class="row")
       p(class='left') © Copyright Gabrielle Epstein 2013.
       ul(class="inline-list right")
         li: a(href='mailto:doctorgabi@gmail.com') Contact
-        li: a(href='#') About
+        li: a(href='#' data-reveal-id="aboutModal") About
         li: a(href='https://github.com/doctorgabi/MusicLync') GitHub
         li: a(href='/musicians') Musicians
         li: a(href='#') Bands
         li: a(href='#') Venues
         li: a(href='#') Managers
         li: a(href='#') Industry
+div(id="aboutModal" class="reveal-modal" data-reveal)
+  h2 Awesome. I have it.
+  p(class="lead") Your couch.  It is mine.
+  p Im a cool paragraph that lives inside of an even cooler modal. Wins
+  a(class="close-reveal-modal") Close
