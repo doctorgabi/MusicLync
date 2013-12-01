@@ -10,7 +10,7 @@ form#profileForm.hidden(action='/musicians', method='post')
         .form#about.hidden
           mixin field(3, 'text', 'name', 'Name', null, null, true, 'name')
           mixin field(3, 'text', 'location', 'Location', null, null, false, 'location')
-          mixin field(3, 'text', 'availableTime', 'Available Time (hrs/wk)', null, '3', false, 'availableTime')
+          mixin field(3, 'text', 'availableTime', 'Available Time (hrs/wk)', null, 'e.g. 3', false, 'availableTime')
           .small-3.columns
             h6='Age Group'
             select#ageSelectBox
