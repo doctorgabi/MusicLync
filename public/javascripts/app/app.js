@@ -16,7 +16,6 @@ function initialize(){
   $('#musiciansIndexPage #createProfileButton').on('click', clickCreateMusicianProfile);
   $('#musiciansIndexPage #profileForm h5').on('click', clickProfileSubheader);
   $('#musiciansIndexPage #profileForm').on('submit', submitSaveProfile);
-
   $('#musiciansIndexPage #profileForm #addGenreButton').on('click', clickAddGenre);
   $('#musiciansIndexPage #profileForm #addInstrumentButton').on('click', clickAddInstrument);
   $('#musiciansIndexPage #profileForm #cancelProfile').on('click', clickCancelProfileSubmit);
@@ -29,14 +28,10 @@ function initialize(){
   $('#musiciansIndexPage #searchMusicianByAttributes').on('click', clickSearchMusicianByAttributes);
   $('#musiciansIndexPage #startSearchMusician').on('click', clickStartSearchMusician);
   $('#musiciansIndexPage #musicianReturnLocationSearch').on('click', clickMusicianReturnLocationSearch);
-  //$('#about').on('click', clickAbout);
   initMap(lat, lng, 13);
   // checkUserStatus();
 }
-// function clickAbout(e){
-//   e.preventDefault();
-//   $('#aboutModal').reveal();
-// }
+
 // function initializeSocketIO(){
 //   var port = window.location.port ? window.location.port : '80';
 //   var url = window.location.protocol + '//' + window.location.hostname + ':' + port + '/app';
@@ -72,6 +67,7 @@ sendAjaxRequest('/userSearch', user, 'get', null, null, function(user, status, j
     htmlNoUser();
   }
 });
+
 //}
 
 
@@ -251,9 +247,6 @@ function clickUpdateProfile(e){
       var email = $('#authentication-button').text();
       var data = {'email': email};
       sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
-        console.log('--------------------this is the userId from the ajax call----------');
-        console.log(musician.user);
-
         var id = musician.user;
         var form = $('#musiciansIndexPage #profileForm');
         var age = $('#ageSelectBox').val();
@@ -268,8 +261,6 @@ function clickUpdateProfile(e){
         var data = userSerialized + '&' + ageSerialized + '&' + formSerialized + '&' + locSerialized;
         var url = '/musicians/' + id;
         sendAjaxRequest(url, data, 'post', 'put', e, function(musician, status, jqXHR){
-          console.log('*******************this is after the ajax call************');
-          console.log(musician);
           htmlUpdateMusicians(musician);
           $('#successNotifier #successUpdate').removeClass('hidden');
         });

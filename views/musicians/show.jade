@@ -11,57 +11,72 @@ block content
         .small-12.columns.noBorders.musicianProfile
           .small-7.columns.noBorders
             .row
+
               .small-7.columns
                 img(src=musician.photoUrl id="musicianPhoto")
+
               .small-5.columns
                 h4=musician.name
                 p=musician.location
-                a(href=musician.website) #{musician.website}
+                a(href=musician.website class=musician.website ? '' : 'hidden') #{musician.website}
+
                 #socialMedia
-                  a(href=musician.twitterLink, alt="twitter"): img(src="/images/twitter1.png" class="socialMediaIcons")
-                  a(href=musician.googlePlusLink, alt="google plus"): img(src="/images/g+32.png" class="socialMediaIcons")
-                  a(href=musician.facebookLink, alt="facebook"): img(src="/images/facebook.png" class="socialMediaIcons")
-                  a(href=musician.linkedInLink, alt="linked in"): img(src="/images/linkedin.png" class="socialMediaIcons")
-                p <strong>Instruments:</strong>
+                  a(href=musician.twitterLink, alt="twitter" class=musician.twitterLink ? '' : 'hidden'): img(src="/images/twitter1.png" class="socialMediaIcons")
+                  a(href=musician.googlePlusLink, alt="google plus" class=musician.googlePlusLink ? '' : 'hidden'): img(src="/images/g+32.png" class="socialMediaIcons")
+                  a(href=musician.facebookLink, alt="facebook" class=musician.facebookLink ? '' : 'hidden'): img(src="/images/facebook.png" class="socialMediaIcons")
+                  a(href=musician.linkedInLink, alt="linked in" class=musician.linkedInLink ? '' : 'hidden'): img(src="/images/linkedin.png" class="socialMediaIcons")
+
+                p(class=musician.instruments ? '' : 'hidden') <strong>Instruments:</strong>
                  each instrument in musician.instruments
                   span= instrument.name + "  "
-                p <strong>Other skills:</strong> #{musician.skills}
-                p <strong>Genres:</strong>
+
+                p(class=musician.skills ? '' : 'hidden') <strong>Other skills:</strong> #{musician.skills}
+
+                p(class=musician.genres ? '' : 'hidden') <strong>Genres:</strong>
                  each genre in musician.genres
                   span= genre.name + "  "
 
             .row
-              .small-12.columns
+              .small-4.columns.leftPadding
+
+                p(class=musician.availableTime ? '' : 'hidden') <strong>Available</strong> #{musician.availableTime} hrs/week
+                p(class=musician.ageGroup ? '' : 'hidden') <strong>Age</strong> #{musician.ageGroup}
+
+                p(class=musician.instrumentsTaught ? '' : 'hidden') <strong>I teach: </strong>  #{musician.instrumentsTaught}
+                  span(class=musician.feePerHourTeach ? '' : 'hidden') , for $#{musician.feePerHourTeach} per hour
+
+              .small-8.columns
+
+                p(class=musician.influences[0] ? '' : 'hidden') <strong>Influences:</strong> #{musician.influences}
+                ul <strong>Wants: </strong>
+                  li(class=musician.wantsToPractice ? '' : 'hidden')= " to practice, "
+                  li(class=musician.wantsToPerform ? '' : 'hidden')=" to perform, "
+                  li(class=musician.wantsTeacher ? '' : 'hidden')=" a teacher. "
+                p
+                  span(class=musician.hasPracticeSpace ? '' : 'hidden')="Has practice space. "
+                  span(class=musician.hasEquipmentTransport ? '' : 'hidden') Has equipment transport.
+
+
 
           .small-5.columns.noBorders
             #map-canvas.noBorders
+
         .small-12.columns.noBorders.musicianProfile
-          p <strong>Bio:</strong> #{musician.bio}
+          p.leftPadding <strong>Bio:</strong> #{musician.bio}
 
-
-
-      //-     p(class=musician.influences[0] ? '' : 'hidden') Influences: #{musician.influences}
-      //-     p Email: #{musician.user.email}
-      //-
       //-     p Forthcoming gigs: #{musician.gigDates}
       //-     p Venues: #{musician.gigVenues}
+      //-     p Hourly gig fee: #{musician.feePerHourGig}
 
-
-      //-     p Instruments taught: #{musician.instrumentsTaught}
       //-     p Instruments owned: #{musician.instrumentsOwned}
       //-     p Equipment access: #{musician.equipmentAccess}
-      //-     p Practice space available: #{musician.hasPracticeSpace}
-      //-     p Equipment transport available: #{musician.hasEquipmentTransport}
-      //-     p Time available per week: #{musician.availableTime}
-      //-     p Age group: #{musician.ageGroup}
-      //-     p Wants to practice: #{musician.wantsToPractice}
-      //-     p Wants to perform: #{musician.wantsToPerform}
-      //-     p Looking for a teacher: #{musician.wantsTeacher}
-      //-     p Hourly gig fee: #{musician.feePerHourGig}
       //-     p Hourly equipment rental fee: #{musician.feePerHourEquipment}
-      //-     p Hourly teaching fee: #{musician.feePerHourTeach}
-      //-     p Bio: #{musician.bio}
+
+
+
+
+
+
       //-     //-embed video & audio
-      //- .small-6.columns
-      //-
+
 

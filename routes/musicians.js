@@ -106,6 +106,7 @@ exports.update = function(req, res){
     availableTime         : req.body.availableTime,
     ageGroup              : req.body.ageGroup,
     wantsToPractice       : req.body.wantsToPractice,
+    wantsToPerform        : req.body.wantsToPerform,
     wantsTeacher          : req.body.wantsTeacher,
     feePerHourGig         : req.body.feePerHourGig,
     feePerHourTeach       : req.body.feePerHourTeach,
