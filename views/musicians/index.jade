@@ -13,6 +13,9 @@ block content
           //- .button.small.radius.expand#editProfileButton(class=user ? '' : 'hidden') Edit my profile
         a(href="#")
           .button.small.radius.expand#searchMusiciansButton Search Musicians
+
+
+          //-hidden forms & map:
       .small-10.columns
         include ../home/authentication-form
         include profile-form
@@ -23,15 +26,19 @@ block content
             include search-form
         include searchAttributes-form
 
-
-        #successNotifier.hidden
-          h5#success.hidden Success! You have just created your profile. What would you like to do now?
-          h5#successUpdate.hidden Success! You have just updated your profile. What would you like to do now?
-          h5#successDelete.hidden Success! You have just deleted your profile. What would you like to do now?
-          a(href="/musicians")
-            .button.small.radius#browseAllMusicians Browse all musicians
-          a#ViewMyProfileLink(href="#")
-            .button.small.radius View my profile
+        .row
+          #successNotifier.hidden
+            .small-12.columns
+              h5#success.hidden Success! You have just created your profile. What would you like to do now?
+              h5#successUpdate.hidden Success! You have just updated your profile. What would you like to do now?
+              h5#successDelete.hidden Success! You have just deleted your profile. What would you like to do now?
+            .row
+              .small-6.columns
+                a.successbutton(href="/musicians")
+                  .button.small.radius.expand#browseAllMusicians Browse all musicians
+              .small-6.columns
+                a.successbutton#ViewMyProfileLink(href="#")
+                  .button.small.radius.expand View my profile
 
 
 

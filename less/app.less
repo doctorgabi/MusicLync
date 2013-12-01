@@ -197,10 +197,28 @@ footer{
     }
   }
   #successNotifier{
-    background-color: @base;
-    border-radius: 5px;
+    margin-top: 20px;
+    background-color: @base + #111111;
+    border-radius: 15px;
     h5{
+      text-align: center;
       color: @baseText;
+      font-family: 'Roboto', Arial, sans-serif; font-weight: 500;
+    }
+    a.successbutton, #ViewMyProfileLink{
+      #browseAllMusicians, .button{
+        color: @baseDark;
+        // margin-left: 50px;
+        background-color: @baseButton;
+        opacity: 0.8;
+        border-radius: 5px;
+        -webkit-box-shadow: -3px 4px 6px #000;
+        -moz-box-shadow:    -3px 4px 6px #000;
+        box-shadow:         -3px 4px 6px #000;
+        &:hover, &:focus{
+          opacity: 1;
+        }
+      }
     }
   }
   #profileForm, #searchForm, #searchAttributesForm{
