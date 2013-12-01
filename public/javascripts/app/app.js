@@ -160,9 +160,7 @@ function clickDeleteProfile(e){
 
 function clickProfileSubheader(){
   var $subheader = $(this);
-  $('#profileForm .form').removeClass('hidden');
-  $('#profileForm .form').addClass('hidden');
-  $subheader.next().removeClass('hidden');
+  $subheader.next().toggleClass('hidden');
 }
 
 function clickAddGenre(){
