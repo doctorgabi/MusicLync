@@ -206,11 +206,9 @@ function submitSaveProfile(e){
       var formSerialized = $(form).serialize();
       var locSerialized = $.param(locdata);
       var data = ageSerialized + '&' + locSerialized + '&' + formSerialized;
-      // console.log('---------------------------------before ajax----------------------------');
-      // console.log(data);
+
       sendAjaxRequest('/musicians', data, 'post', null, null, function(musician, status, jqXHR){
-        // console.log('---------------------------------after ajax----------------------------');
-        // console.log(musician);
+        $('#successNotifier #success').removeClass('hidden');
         htmlUpdateMusicians(musician);
       });
     });
