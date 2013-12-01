@@ -7,76 +7,68 @@ block content
     var lng = #{musician.longitude};
 
   #musiciansShowPage
-      .row
-        .small-12.columns.noBorders.musicianProfile
-          .small-7.columns.noBorders
-            .row
+    .row
+      .small-12.columns.noBorders.musicianProfile
+        .small-7.columns.noBorders
+          .row
 
-              .small-7.columns
-                img(src=musician.photoUrl id="musicianPhoto")
+            .small-7.columns
+              img(src=musician.photoUrl id="musicianPhoto")
 
-              .small-5.columns
-                h4=musician.name
-                p=musician.location
-                a(href=musician.website class=musician.website ? '' : 'hidden') #{musician.website}
+            .small-5.columns
+              h2.subheader=musician.name
+              h4.subheader <strong>#{musician.location}</strong>
+              a(href=musician.website class=musician.website ? '' : 'hidden') #{musician.website}
 
-                #socialMedia
-                  a(href=musician.twitterLink, alt="twitter" class=musician.twitterLink ? '' : 'hidden'): img(src="/images/twitter1.png" class="socialMediaIcons")
-                  a(href=musician.googlePlusLink, alt="google plus" class=musician.googlePlusLink ? '' : 'hidden'): img(src="/images/g+32.png" class="socialMediaIcons")
-                  a(href=musician.facebookLink, alt="facebook" class=musician.facebookLink ? '' : 'hidden'): img(src="/images/facebook.png" class="socialMediaIcons")
-                  a(href=musician.linkedInLink, alt="linked in" class=musician.linkedInLink ? '' : 'hidden'): img(src="/images/linkedin.png" class="socialMediaIcons")
+              #socialMedia
+                a(href=musician.twitterLink, alt="twitter" class=musician.twitterLink ? '' : 'hidden'): img(src="/images/twitter1.png" class="socialMediaIcons")
+                a(href=musician.googlePlusLink, alt="google plus" class=musician.googlePlusLink ? '' : 'hidden'): img(src="/images/g+32.png" class="socialMediaIcons")
+                a(href=musician.facebookLink, alt="facebook" class=musician.facebookLink ? '' : 'hidden'): img(src="/images/facebook.png" class="socialMediaIcons")
+                a(href=musician.linkedInLink, alt="linked in" class=musician.linkedInLink ? '' : 'hidden'): img(src="/images/linkedin.png" class="socialMediaIcons")
 
-                p(class=musician.instruments ? '' : 'hidden') <strong>Instruments:</strong>
-                 each instrument in musician.instruments
-                  span= instrument.name + "  "
+              p(class=musician.instruments ? '' : 'hidden') <strong>Instruments:</strong>
+               each instrument in musician.instruments
+                span= instrument.name + "  "
 
-                p(class=musician.skills ? '' : 'hidden') <strong>Other skills:</strong> #{musician.skills}
+              p(class=musician.skills ? '' : 'hidden') <strong>Other skills:</strong> #{musician.skills}
 
-                p(class=musician.genres ? '' : 'hidden') <strong>Genres:</strong>
-                 each genre in musician.genres
-                  span= genre.name + "  "
+              p(class=musician.genres ? '' : 'hidden') <strong>Genres:</strong>
+               each genre in musician.genres
+                span= genre.name + "  "
 
-            .row
-              .small-4.columns.leftPadding
+          .row
+            .small-4.columns.leftPadding
 
-                p(class=musician.availableTime ? '' : 'hidden') <strong>Available</strong> #{musician.availableTime} hrs/week
-                p(class=musician.ageGroup ? '' : 'hidden') <strong>Age</strong> #{musician.ageGroup}
+              p(class=musician.availableTime ? '' : 'hidden') <strong>Available</strong> #{musician.availableTime} hrs/week
+              p(class=musician.ageGroup ? '' : 'hidden') <strong>Age</strong> #{musician.ageGroup}
 
-                p(class=musician.instrumentsTaught ? '' : 'hidden') <strong>I teach: </strong>  #{musician.instrumentsTaught}
-                  span(class=musician.feePerHourTeach ? '' : 'hidden') , for $#{musician.feePerHourTeach} per hour
+              p(class=musician.instrumentsTaught ? '' : 'hidden') <strong>I teach: </strong>  #{musician.instrumentsTaught}
+                span(class=musician.feePerHourTeach ? '' : 'hidden') , for $#{musician.feePerHourTeach} per hour
+              p(class=musician.instrumentsOwned ? '' : 'hidden') <strong>I own:</strong>  #{musician.instrumentsOwned}
 
-              .small-8.columns
+            .small-8.columns
 
-                p(class=musician.influences[0] ? '' : 'hidden') <strong>Influences:</strong> #{musician.influences}
-                ul <strong>Wants: </strong>
-                  li(class=musician.wantsToPractice ? '' : 'hidden')= " to practice, "
-                  li(class=musician.wantsToPerform ? '' : 'hidden')=" to perform, "
-                  li(class=musician.wantsTeacher ? '' : 'hidden')=" a teacher. "
-                p
-                  span(class=musician.hasPracticeSpace ? '' : 'hidden')="Has practice space. "
-                  span(class=musician.hasEquipmentTransport ? '' : 'hidden') Has equipment transport.
-
-
-
-          .small-5.columns.noBorders
-            #map-canvas.noBorders
-
-        .small-12.columns.noBorders.musicianProfile
-          p.leftPadding <strong>Bio:</strong> #{musician.bio}
-
-      //-     p Forthcoming gigs: #{musician.gigDates}
-      //-     p Venues: #{musician.gigVenues}
-      //-     p Hourly gig fee: #{musician.feePerHourGig}
-
-      //-     p Instruments owned: #{musician.instrumentsOwned}
-      //-     p Equipment access: #{musician.equipmentAccess}
-      //-     p Hourly equipment rental fee: #{musician.feePerHourEquipment}
+              p(class=musician.influences[0] ? '' : 'hidden') <strong>Influences:</strong> #{musician.influences}
+              ul <strong>Wants: </strong>
+                li(class=musician.wantsToPractice ? '' : 'hidden')= " to practice, "
+                li(class=musician.wantsToPerform ? '' : 'hidden')=" to perform, "
+                li(class=musician.wantsTeacher ? '' : 'hidden')=" a teacher. "
+              p
+                span(class=musician.hasPracticeSpace ? '' : 'hidden')="Has practice space. "
+                span(class=musician.hasEquipmentTransport ? '' : 'hidden') Has equipment transport.
+              p(class=musician.equipmentAccess ? '' : 'hidden') <strong>Other Equipment: </strong> #{musician.equipmentAccess}
+              p(class=musician.feePerHourEquipment ? '' : 'hidden') I loan equipment for $#{musician.feePerHourEquipment} per hour
 
 
-
-
-
-
-      //-     //-embed video & audio
-
-
+        .small-5.columns.noBorders
+          #map-canvas.noBorders
+    .row
+      .small-12.columns.noBorders.musicianProfile
+        p.leftPadding <strong>Bio:</strong> #{musician.bio}
+        p.leftPadding <strong>Forthcoming gigs: </strong>
+          span(class=musician.gigDates ? '' : 'hidden') #{musician.gigDates}
+          span(class=musician.gigVenues ? '' : 'hidden') , #{musician.gigVenues}
+          span(class=musician.feePerHourGig ? '' : 'hidden') . Gig fee $#{musician.feePerHourGig} per hour.
+    .row
+      .small-6.columns
+        iframe(src="http://www.youtube.com/watch?v=IPtv14q9ZDg" frameborder="0" allowfullscreen id="musicianVideo" width="560" height="315")
