@@ -64,11 +64,12 @@ block content
           #map-canvas.noBorders
     .row
       .small-12.columns.noBorders.musicianProfile
-        p.leftPadding <strong>Bio:</strong> #{musician.bio}
+        p.leftPadding#musicianBio <strong>Bio:</strong> #{musician.bio}
         p.leftPadding <strong>Forthcoming gigs: </strong>
           span(class=musician.gigDates ? '' : 'hidden') #{musician.gigDates}
           span(class=musician.gigVenues ? '' : 'hidden') , #{musician.gigVenues}
           span(class=musician.feePerHourGig ? '' : 'hidden') . Gig fee $#{musician.feePerHourGig} per hour.
     .row(class=musician.videoUrl ? '' : 'hidden')
-      .small-12.columns(class=musician.videoUrl ? '' : 'hidden')
-        iframe(src=musician.videoUrl frameborder="0" allowfullscreen id="musicianVideo" width=musician.videoUrl ? '560' : "0" height=musician.videoUrl ? '315' : "0" class=musician.videoUrl ? '' : 'hidden')
+      .small-8.columns
+        //- iframe(src=musician.videoUrl frameborder="0" allowfullscreen id="musicianVideo" width='560' height='315')
+        //- iframe(src='http://www.youtube.com/embed/IPtv14q9ZDg' frameborder="0" allowfullscreen id="musicianVideo" width='560' height='315')
