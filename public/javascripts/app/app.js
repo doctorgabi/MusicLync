@@ -4,11 +4,10 @@
 $(document).ready(initialize);
 var lat;
 var lng;
-// var socket;
 
+//mostly click handlers:
 function initialize(){
   $(document).foundation();
-  // initializeSocketIO();
   $('#authentication-button').on('click', clickAuthenticationButton);
   $('#register').on('click', clickRegister);
   $('#login').on('click', clickLogin);
@@ -29,21 +28,10 @@ function initialize(){
   $('#musiciansIndexPage #startSearchMusician').on('click', clickStartSearchMusician);
   $('#musiciansIndexPage #musicianReturnLocationSearch').on('click', clickMusicianReturnLocationSearch);
   initMap(lat, lng, 13);
-  // checkUserStatus();
 }
 
-// function initializeSocketIO(){
-//   var port = window.location.port ? window.location.port : '80';
-//   var url = window.location.protocol + '//' + window.location.hostname + ':' + port + '/app';
-
-//   socket = io.connect(url);
-//   socket.on('connected', socketConnected);
-// }
-
-// function socketConnected(data){
-//   console.log(data);
-// }
-
+// Google map for the musician individual profile page.
+// Global lat & lng are set when a musician is clicked.
 function initMap(lat, lng, zoom){
   var mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.ROADMAP};
   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -51,7 +39,8 @@ function initMap(lat, lng, zoom){
   new google.maps.Marker({map: map, position: latLng});
 }
 
-// function checkUserStatus(){
+// Checks if a user is logged in and if they have a profile
+// set up, to determine which buttons to display.
 var user = {'email': $('#authentication-button').text()};
 sendAjaxRequest('/userSearch', user, 'get', null, null, function(user, status, jqXHR){
   if(user.length > 0){
@@ -68,13 +57,13 @@ sendAjaxRequest('/userSearch', user, 'get', null, null, function(user, status, j
   }
 });
 
-//}
 
 
 //-------------------------------------------------------------------//
 //-------------------------Click Handlers----------------------------//
 //-------------------------------------------------------------------//
 
+// Registers a new User in the database.
 function clickRegister(e){
   var url = '/users';
   var data = $('form#authentication').serialize();
@@ -83,6 +72,7 @@ function clickRegister(e){
   });
 }
 
+// Logs in an existing user.
 function clickLogin(e){
   var url = '/login';
   var data = $('form#authentication').serialize();
@@ -91,6 +81,8 @@ function clickLogin(e){
   });
 }
 
+// Offers login or logout button with
+// email depending on if a user is logged in.
 function clickAuthenticationButton(e){
   var isAnonymous = $('#authentication-button[data-email="anonymous"]').length === 1;
   if(isAnonymous){
@@ -107,6 +99,7 @@ function clickAuthenticationButton(e){
 
 //-------------Musicians Index Page Click Handlers-------------------//
 
+// Initiates the profile form for a new user.
 function clickCreateMusicianProfile(){
   $('#musiciansIndexPage #profileForm').removeClass('hidden');
   $('#musiciansIndexPage #musicians').toggleClass('hidden');
@@ -124,16 +117,17 @@ function clickCreateMusicianProfile(){
   }
 }
 
+// Gets the user from the database and returns
+// the associated musician object. Hides/reveals appropriate
+// form elements for edit profile. Appends musician id to
+// update button. Calls populate form function.
 function clickEditMusicianProfile(){
   $('#musiciansIndexPage #musicians').toggleClass('hidden');
   var email = $('#authentication-button').text();
   var data = {'email': email};
   sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
-    console.log(musician.user);
-    //the next line was added back in from a previous version:
     var $id = $('<p class="hidden">' + musician.user + '</p>');
     $('#musiciansIndexPage #profileForm').toggleClass('hidden');
-    //so was the next line:
     $('#musiciansIndexPage #profileForm #updateProfile').append($id);
     $('#musiciansIndexPage #profileForm #updateProfile').toggleClass('hidden');
     $('#musiciansIndexPage #profileForm #saveProfile').toggleClass('hidden');
@@ -142,27 +136,19 @@ function clickEditMusicianProfile(){
   });
 }
 
-function clickDeleteProfile(e){
-  //put in an 'are you sure?' button alert here then call the subsequent code if yes is clicked.
-  var user = $('#musiciansIndexPage #profileForm #updateProfile p').text();
-  var url = '/musicians/' + user;
-  user = {'user': user};
-  var data = $.param(user);
-  console.log(user);
-  sendAjaxRequest(url, data, 'post', 'delete', e, function(musician, status, jqXHR){
-    htmlUpdateMusicians(musician);
-    $('#successNotifier #successDelete').removeClass('hidden');
-    $('#successNotifier #ViewMyProfileLink').addClass('hidden');
-  });
-  e.preventDefault();
-}
+
 //********Profile create, update or delete form button click handlers******//
 
+
+// Reveals or hides form sections when their
+// section header is clicked.
 function clickProfileSubheader(){
   var $subheader = $(this);
   $subheader.next().toggleClass('hidden');
 }
 
+// When user inputs a new genre, grabs it and
+// sends ajax to the genres database compilation.
 function clickAddGenre(){
   var genre = $('#AddNewGenre').val();
   var data = {name: genre};
@@ -171,6 +157,8 @@ function clickAddGenre(){
   });
 }
 
+// When user inputs a new instrument, grabs it
+// and sends ajax to the instruments database compilation.
 function clickAddInstrument(){
   var instrument = $('#AddNewInstrument').val();
   var data = {name: instrument};
@@ -179,9 +167,14 @@ function clickAddInstrument(){
   });
 }
 
+// User must add a location, if not they get an alert.
+// If so, the location gets geocoded, and the age select
+// box form are grabbed as variables. Geocoder callback
+// serializes the location data, age, and form then
+// concatenates and sends ajax to make new musician
+// object in the database.
 function submitSaveProfile(e){
   $('#musiciansIndexPage #profileForm').toggleClass('hidden');
-  console.log('submitSaveProfile is being called');
   var name = $('#location').val();
   if(!name){alert('Please enter your location');
   }else{
@@ -214,6 +207,8 @@ function submitSaveProfile(e){
   e.preventDefault();
 }
 
+// If they cancel profile submission all inputs are
+// emptied out and the form is hidden again.
 function clickCancelProfileSubmit(e){
   $('#musiciansIndexPage #profileForm input').val('');
   $('#musiciansIndexPage #profileForm').addClass('hidden');
@@ -221,13 +216,19 @@ function clickCancelProfileSubmit(e){
   e.preventDefault();
 }
 
+// Similar to create profile. Location is required
+// and is sent to geocode. On callback the
+// email is grabbed and used to ajax call
+// to get the correct musician. On callback the form,
+// age and location are serialized and concatenated
+// and sent by Ajax to update the existing musician.
+// Success notifier is revealed.
 function clickUpdateProfile(e){
   var place = $('#location').val();
   if(!place){
     alert('Please enter your location');
   }else{
     var geocoder = new google.maps.Geocoder();
-    //can probably refactor this geocode part out of here and have it just return the locdata object.
     geocoder.geocode({address: place}, function(results, status){
       var location = {};
       location.name = results[0].formattedAddress;
@@ -239,7 +240,6 @@ function clickUpdateProfile(e){
         longitude  : location.coordinates.lng()
       };
       var locSerialized = $.param(locdata);
-      //inserted from here to fix update glitch:
       var email = $('#authentication-button').text();
       var data = {'email': email};
       sendAjaxRequest('/users', data, 'get', null, null, function(musician, status, jqXHR){
@@ -268,13 +268,37 @@ function clickUpdateProfile(e){
 
 
 
+// Gets the musician id from the hidden form element
+// and passes it via ajax to delete the musician profile,
+// but not the user. Updates
+function clickDeleteProfile(e){
+  var user = $('#musiciansIndexPage #profileForm #updateProfile p').text();
+  var url = '/musicians/' + user;
+  user = {'user': user};
+  var data = $.param(user);
+  sendAjaxRequest(url, data, 'post', 'delete', e, function(musician, status, jqXHR){
+    htmlUpdateMusicians(musician);
+    $('#successNotifier #successDelete').removeClass('hidden');
+    $('#successNotifier #ViewMyProfileLink').addClass('hidden');
+  });
+  e.preventDefault();
+}
+
+
+
+
 //-------------musician search functions------------------//
 
+// Reveals the musician search form.
 function clickSearchMusician(){
   $('#musicians').addClass('hidden');
   $('#searchForm').removeClass('hidden');
 }
 
+
+// Grabs the search location and geocodes it.
+// Calls the map update function passing in
+// the appropriate latitude and longitude.
 function clickSearchMusicianByLocation(){
   var place = $('#searchLocation').val();
 
@@ -282,7 +306,7 @@ function clickSearchMusicianByLocation(){
   geocoder.geocode({address: place}, function(results, status){
     var location = {};
     location.lat = results[0].geometry.location.ob;
-    location.long = results[0].geometry.location.pb;//refactor these three lines just to lines lat & lng?
+    location.long = results[0].geometry.location.pb;
 
     var lat = location.lat;
     var lng = location.long;
@@ -290,12 +314,22 @@ function clickSearchMusicianByLocation(){
   });
 }
 
+// If attribute search is selected the location
+// search form and map are hidden and the attributes
+// search form is revealed.
 function clickSearchMusicianByAttributes(){
   $('#musicians-map-canvas').addClass('hidden');
   $('#searchForm').toggleClass('hidden');
   $('#searchAttributesForm').removeClass('hidden');
 }
 
+
+// when attributes search form filled in, inputs
+// are grabbed, serialezed and concatenated, then
+// sent by Ajax to find matching musicians.
+// The callback hides the searchform, empties out
+// the existing page of musicians then appends
+// only the musicians that were returned.
 function clickStartSearchMusician(e){
   var form = $('#searchAttributesForm');
   var formSerialized = $(form).serialize();
@@ -312,6 +346,9 @@ function clickStartSearchMusician(e){
   });
 }
 
+
+// Hides the attributes search form and re-opens the
+// location search form.
 function clickMusicianReturnLocationSearch(e){
   $('#musicians-map-canvas').toggleClass('hidden');
   $('#searchForm').toggleClass('hidden');
@@ -324,9 +361,15 @@ function clickMusicianReturnLocationSearch(e){
 
 //***********view musician links************//
 
+
+// When a musician image is clicked its id is
+// sliced from the href attribute. It is passed
+// via ajax to find the correct musician and set
+// the new window location accordingly (this will
+// trigger a GET to musicians/:id).
 function clickMusicianLink(e){
-  var musicianId = $(this).attr('href');//contains the url with id
-  musicianId = musicianId.slice(11);//slices out to keep just the id
+  var musicianId = $(this).attr('href');
+  musicianId = musicianId.slice(11);
   var url = '/mapDataRequest/' + musicianId;
   sendAjaxRequest(url, musicianId, 'get', null, null, function(musician, status, jqXHR){
     window.location.href = '/musicians/' + musicianId;
@@ -334,6 +377,8 @@ function clickMusicianLink(e){
   e.preventDefault();
 }
 
+// Hides the success notifier when
+// the link is clicked.
 function clickViewMusicianProfile(){
   $('#successNotifier').addClass('hidden');
 }
@@ -341,6 +386,9 @@ function clickViewMusicianProfile(){
 //-------------------------Login HTML changes------------------------//
 //-------------------------------------------------------------------//
 
+
+// Ajax callback from clicking register.
+// Empties the inputs and hides the register form.
 function htmlRegisterComplete(result){
   $('input[name="email"]').val('');
   $('input[name="password"]').val('');
@@ -350,6 +398,10 @@ function htmlRegisterComplete(result){
   }
 }
 
+// Ajax callback from clicking login.
+// Empties the inputs, hides the login form,
+// changes the login button to the user's
+// email and returns the user to the homepage.
 function htmlUpdateLoginStatus(result){
   $('input[name="email"]').val('');
   $('input[name="password"]').val('');
@@ -364,6 +416,9 @@ function htmlUpdateLoginStatus(result){
   }
 }
 
+// Ajax callback from clicking authentication button
+// when logged in. Returns default settings to
+// buttons and takes user back to home page.
 function htmlLogout(data){
   $('#authentication-button').attr('data-email', 'anonymous');
   $('#authentication-button').text('Login | Sign Up');
@@ -372,6 +427,9 @@ function htmlLogout(data){
   window.location.href='/';
 }
 
+// 1 of these 3 functions is called on page load depending on if
+// a user is logged in and if they have a profile already. Shows/
+// hides buttons.
 function htmlNoUser(){
   $('#musiciansIndexPage #createProfileButton').addClass('hidden');
   $('#musiciansIndexPage #editProfileButton').addClass('hidden');
@@ -391,23 +449,41 @@ function htmlUserHasProfile(){
 //------------------All Musicians Page HTML changes------------------//
 //-------------------------------------------------------------------//
 
-//-----from submit new musician profile form-----//
+
+
+// Ajax callback passing musician that was either
+// successfully created, edited or deleted.
+// Hides the profile form, shows the succes
+// notifier and adds appropriate id to the 'view' link
+// (view link will be hidden on delete).
 function htmlUpdateMusicians(musician){
   $('#musiciansIndexPage #profileForm').addClass('hidden');
   $('#successNotifier').removeClass('hidden');
   $('#ViewMyProfileLink').attr('href', '/musicians/'+musician._id);
 }
 
+// Ajax callback from user adding new genre
+// to the database. Appends genres
+// with checkboxes to the profile form.
 function htmlUpdateProfileFormGenres(genre){
   var $genre = $('<span>'+genre.name+'<input type="checkbox" value="'+genre.id+'" name="genres"></input></span>');
   $('#profileFormGenres').append($genre);
 }
 
+// Ajax callback from user adding a new
+// instrument to the database. Appends
+// instruments with checkboxes to the profile form.
 function htmlUpdateProfileFormInstruments(instrument){
   var $instrument = $('<span>'+instrument.name+'<input type="checkbox" value="'+instrument.id+'" name="instruments"></input></span>');
   $('#profileFormInstruments').append($instrument);
 }
 
+
+// Called when user searches for a musician by location.
+// Geocoded lat and long are used to display the map.
+// Sends ajax request to get musicians and pass them on callback
+// through a for loop to append their markers to the map,
+// passing in musician, map and co-ordinates.
 function htmlUpdateMusiciansMap(lat, lng){
   var zoom = 5;
   var mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.ROADMAP};
@@ -423,6 +499,11 @@ function htmlUpdateMusiciansMap(lat, lng){
   });
 }
 
+// Ajax callback from searching for musicians by location.
+// Receives musician object, map and co-ordinates, and creates
+// a map marker for that musician. Adds hover states to reveal
+// musicians name and image to marker. Makes marker a clickable
+// link to that musicians profile page.
 function mapMarkerBuildInfoWindow(map, musician, latLng){
   var id = musician._id;
   var marker = new google.maps.Marker({map: map, position: latLng, clickable: true});
@@ -440,7 +521,10 @@ function mapMarkerBuildInfoWindow(map, musician, latLng){
   });
 }
 
-//-------from edit my profile button---------//
+
+// Ajax callback from edit profile button click.
+// Inserts all current musician object values
+// into the profile form ready for editing.
 function htmlPopulateProfileForm(musician){
   $('#musiciansIndexPage #profileForm #name').val(musician.name);
   $('#musiciansIndexPage #profileForm #location').val(musician.location);
@@ -475,11 +559,3 @@ function htmlPopulateProfileForm(musician){
   $('#musiciansIndexPage #profileForm #twitterLink').val(musician.twitterLink);
   $('#musiciansIndexPage #profileForm #linkedInLink').val(musician.linkedInLink);
 }
-
-// function getMusicianIdByName(name){
-//   var url = '/musiciansGetId';
-//   sendAjaxRequest(url, name, 'get', null, null, function(id, status, jqXHR){
-//     console.log(id);
-//     //call the rest of the steps in here as it's asynchronous
-//   });
-// }
